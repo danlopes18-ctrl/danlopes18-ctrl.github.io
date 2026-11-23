@@ -19,3 +19,7 @@
 - [GitHub Organization & Open-Source Repo Intelligence Extractor](https://apify.com/danlopes18/apify-github-devtool-org-intel): B2B devtool lead enrichment, velocity scoring & AI/MCP adoption signals ($4 / 1,000 profiles/repos).
 - [RSS, Atom & Blog News Intelligence Aggregator (AI / MCP)](https://apify.com/danlopes18/apify-rss-news-ai-monitor): Zero-browser RSS/Atom/JSON Feed aggregator with auto-discovery, keyword filtering & clean LLM summaries ($2 / 1,000 articles).
 - [B2B Company Contact, Email, Phone & Social Profile Extractor](https://apify.com/danlopes18/apify-b2b-contact-social-extractor): Multi-page zero-browser crawler extracting verified public emails (role vs personal), phones, WhatsApp/booking links & social profiles ($6 / 1,000 companies).
+
+## Technical Engineering Guides
+- [4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies](https://danlopes18-ctrl.github.io/guides/hardening-nodejs-mcp-servers.html): Symlink jails (`fs.realpathSync`), DNS-verified SSRF protection (`169.254.169.254`), read-only `node:sqlite`, and `crypto.timingSafeEqual` HMAC verification.
+- [Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Apify Actors](https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html): Architecture and benchmarks for 5 zero-browser Node.js 22 Apify Actors for RAG, llms.txt audits, GitHub velocity, RSS monitoring, and B2B lead enrichment.

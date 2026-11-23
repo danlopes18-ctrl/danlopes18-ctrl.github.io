@@ -392,6 +392,27 @@
     details.faq[open] summary::after { content: "−"; }
     details.faq p { margin-top: 12px; font-size: 14.5px; color: var(--text-muted); }
 
+    /* Apify Cloud Actors & Guides */
+    .mini-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .guides-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .mini-card {
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 16px; padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+      transition: border-color .16s ease, transform .16s ease;
+    }
+    .mini-card:hover { border-color: rgba(52,211,153,0.42); transform: translateY(-2px); }
+    .mini-card h3 { font-size: 16.5px; font-weight: 800; letter-spacing: -0.015em; color: #FFF; line-height: 1.3; }
+    .mini-card p { font-size: 13.8px; color: var(--text-muted); line-height: 1.55; }
+    .mini-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .mini-price {
+      font-family: var(--mono); font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+      background: rgba(16,185,129,0.13); color: var(--green); border: 1px solid rgba(52,211,153,0.3);
+    }
+    .mini-links { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; font-weight: 700; padding-top: 8px; border-top: 1px solid var(--border); }
+    .mini-links a { color: var(--green); }
+    .mini-links a.muted { color: var(--cyan); }
+    .mini-links a:hover { text-decoration: underline; }
+
     /* Footer */
     footer {
       margin-top: 40px; border-top: 1px solid var(--border); padding: 34px 0 46px;
@@ -403,7 +424,7 @@
 
     /* Responsive */
     @media (max-width: 960px) {
-      .hero-grid, .suite-card, .bundle-box, .craft-card { grid-template-columns: 1fr; }
+      .hero-grid, .suite-card, .bundle-box, .craft-card, .mini-grid, .guides-grid { grid-template-columns: 1fr; }
       .suite-visual { border-right: none; border-bottom: 1px solid var(--border); }
       .proof-grid { grid-template-columns: repeat(2, 1fr); }
       .nav-links { display: none; }
@@ -434,10 +455,11 @@
         <span class="brand-tag">AI DevTools</span>
       </a>
       <nav class="nav-links" aria-label="Primary">
-        <a href="#demo">Live Simulator</a>
-        <a href="#suites">3 Production Suites</a>
+        <a href="#demo">Simulator</a>
+        <a href="#suites">3 Suites</a>
+        <a href="#actors">Apify Actors</a>
+        <a href="#guides">Guides</a>
         <a href="#bundle">Bundle ($79)</a>
-        <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-actions">
         <a class="btn btn-ghost" href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
@@ -742,6 +764,147 @@
       </div>
     </section>
 
+    <!-- APIFY CLOUD ACTORS (PAY-PER-EVENT + MCP READY) -->
+    <section class="sec" id="actors">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="eyebrow">Apify Store · Pay-per-Event Cloud Tools</div>
+          <h2>5 Zero-Browser Node.js 22 Actors for RAG, Audits &amp; B2B Enrichment</h2>
+          <p>Sub-second pure Node.js 22 Actors with SSRF protection, zero Chromium compute waste, MCP compatibility, and ready-to-run Task Examples.</p>
+        </div>
+        <div class="mini-grid">
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip">SEO &amp; AI Audits</span>
+                <span class="mini-price">$5 / 1k domains</span>
+              </div>
+              <h3>Website Tech Stack, Security &amp; llms.txt Auditor</h3>
+              <p style="margin-top:8px">Detects 25+ stacks, grades 7 HTTP security headers, and checks <span class="mono">llms.txt</span> + AI bot rules in ~174ms.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18/apify-site-intel-ai-auditor" target="_blank" rel="noopener">Apify Store →</a>
+              <a class="muted" href="https://apify.com/danlopes18/apify-site-intel-ai-auditor/examples/apify-site-intel-ai-auditor-task" target="_blank" rel="noopener">Live Task</a>
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip cyan">RAG &amp; MCP</span>
+                <span class="mini-price">$3 / 1k pages</span>
+              </div>
+              <h3>Fast LLM-Ready Markdown &amp; Sitemap Crawler</h3>
+              <p style="margin-top:8px">Streams docs &amp; XML sitemaps into clean Markdown with heading maps and LLM token counts.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18/apify-llm-markdown-crawler" target="_blank" rel="noopener">Apify Store →</a>
+              <a class="muted" href="https://apify.com/danlopes18/apify-llm-markdown-crawler/examples/apify-llm-markdown-crawler-task" target="_blank" rel="noopener">Live Task</a>
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip amber">DevTool Leads</span>
+                <span class="mini-price">$4 / 1k orgs</span>
+              </div>
+              <h3>GitHub Org &amp; Open-Source Repo Intelligence</h3>
+              <p style="margin-top:8px">Extracts repo velocity scores, languages, funding signals, and AI/MCP adoption across GitHub orgs.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18/apify-github-devtool-org-intel" target="_blank" rel="noopener">Apify Store →</a>
+              <a class="muted" href="https://apify.com/danlopes18/apify-github-devtool-org-intel/examples/apify-github-devtool-org-intel-task" target="_blank" rel="noopener">Live Task</a>
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip cyan">AI Briefings</span>
+                <span class="mini-price">$2 / 1k articles</span>
+              </div>
+              <h3>RSS, Atom &amp; Blog News Intelligence Aggregator</h3>
+              <p style="margin-top:8px">Auto-discovers RSS/Atom/JSON feeds, deduplicates articles, and outputs clean LLM-ready summaries.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18/apify-rss-news-ai-monitor" target="_blank" rel="noopener">Apify Store →</a>
+              <a class="muted" href="https://apify.com/danlopes18/apify-rss-news-ai-monitor/examples/apify-rss-news-ai-monitor-task" target="_blank" rel="noopener">Live Task</a>
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip">B2B Contacts</span>
+                <span class="mini-price">$6 / 1k companies</span>
+              </div>
+              <h3>B2B Contact, Email, Phone &amp; Social Extractor</h3>
+              <p style="margin-top:8px">Multi-page crawler extracting verified public emails (role vs personal), phones, WhatsApp/booking links &amp; socials.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18/apify-b2b-contact-social-extractor" target="_blank" rel="noopener">Apify Store →</a>
+              <a class="muted" href="https://apify.com/danlopes18/apify-b2b-contact-social-extractor/examples/apify-b2b-contact-social-extractor-task" target="_blank" rel="noopener">Live Task</a>
+            </div>
+          </article>
+
+          <article class="mini-card" style="border-color:rgba(52,211,153,0.3);background:linear-gradient(155deg, rgba(16,185,129,0.09), rgba(12,16,26,0.96));">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip">All 5 Live Actors</span>
+                <span class="mini-price">MCP + REST API</span>
+              </div>
+              <h3>Browse Full Apify Creator Store</h3>
+              <p style="margin-top:8px">Test any Actor live in seconds with Apify free credits, call synchronously from n8n, or attach via MCP.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18" target="_blank" rel="noopener">View apify.com/danlopes18 →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENGINEERING GUIDES (SEO DEEP DIVES) -->
+    <section class="sec" id="guides">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="eyebrow">Engineering Deep-Dives</div>
+          <h2>Production Guides &amp; Security Benchmarks</h2>
+          <p>Zero-fluff writeups documenting the exact architecture, code patterns, and benchmarks behind our open-source kits and cloud Actors.</p>
+        </div>
+        <div class="guides-grid">
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip">MCP Security · 7 min read</span>
+                <span class="mini-price">Zero npm Deps</span>
+              </div>
+              <h3>4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies</h3>
+              <p style="margin-top:8px">Exact native Node.js 22 fixes for symlink path traversal (<span class="mono">fs.realpathSync</span>), cloud-metadata SSRF (<span class="mono">169.254.169.254</span>), writable SQLite handles, and timing-unsafe HMAC webhooks.</p>
+            </div>
+            <div class="mini-links">
+              <a href="guides/hardening-nodejs-mcp-servers.html">Read Full Technical Guide →</a>
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip cyan">Apify &amp; RAG · 6 min read</span>
+                <span class="mini-price">174ms Latency</span>
+              </div>
+              <h3>Why Headless Browser Scrapers Burn Compute: 174ms Zero-Browser Apify Actors</h3>
+              <p style="margin-top:8px">How pure Node.js 22 Actors cut RAM and latency by 10x+ for RAG Markdown crawling, <span class="mono">llms.txt</span> audits, RSS monitoring, GitHub velocity, and B2B contact extraction.</p>
+            </div>
+            <div class="mini-links">
+              <a href="guides/zero-browser-apify-actors-rag-b2b.html">Read Full Benchmark Guide →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- FAQ -->
     <section class="sec" id="faq">
       <div class="wrap">
@@ -780,8 +943,10 @@
       <div>© 2026 Daniel Lopes · AI DevTools — Zero-Dependency Engineering Kits</div>
       <div class="foot-links">
         <a href="https://danlopes3.gumroad.com" target="_blank" rel="noopener">Gumroad Storefront</a>
+        <a href="https://apify.com/danlopes18" target="_blank" rel="noopener">Apify Store (5 Actors)</a>
+        <a href="guides/hardening-nodejs-mcp-servers.html">MCP Security Guide</a>
+        <a href="guides/zero-browser-apify-actors-rag-b2b.html">Apify RAG Guide</a>
         <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://tensorblock.co/mcp/servers/github-danlopes18-ctrl-mcp-starter-suite-lite-b0cabba8" target="_blank" rel="noopener">TensorBlock MCP Index</a>
         <a href="https://x.com/FelipeDani9353" target="_blank" rel="noopener">X / Twitter</a>
       </div>
     </div>

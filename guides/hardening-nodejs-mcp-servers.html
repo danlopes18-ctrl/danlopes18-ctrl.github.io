@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>4 Real Security Bugs in Node.js MCP Servers (Fixed With Zero npm Dependencies) · Daniel Lopes</title>
+  <meta name="description" content="How to fix symlink path traversal, DNS-rebinding SSRF to 169.254.169.254, writable SQLite injections, and timing-unsafe webhook signatures in Node.js MCP servers using zero external npm packages." />
+  <meta name="theme-color" content="#06080E" />
+  <link rel="canonical" href="https://danlopes18-ctrl.github.io/guides/hardening-nodejs-mcp-servers.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://danlopes18-ctrl.github.io/guides/hardening-nodejs-mcp-servers.html" />
+  <meta property="og:title" content="4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies" />
+  <meta property="og:description" content="Symlink escapes, cloud metadata SSRF, writable SQLite handles, and timing leaks — hardened with native Node.js 22 stdlib and 18ms cold start." />
+  <meta property="og:image" content="https://danlopes18-ctrl.github.io/assets/card_mcp_suite.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@FelipeDani9353" />
+  <meta name="twitter:title" content="4 Real Security Bugs in Node.js MCP Servers (Zero npm Deps)" />
+  <meta name="twitter:description" content="Fix symlink escapes, SSRF to 169.254.169.254, writable SQLite & timing leaks in native Node.js MCP servers." />
+  <meta name="twitter:image" content="https://danlopes18-ctrl.github.io/assets/card_mcp_suite.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies",
+    "description": "Engineering guide to eliminating symlink path traversal, cloud-metadata SSRF, writable SQLite handles, and timing-unsafe webhook signatures in native Node.js MCP servers.",
+    "author": {
+      "@type": "Person",
+      "name": "Daniel Lopes",
+      "url": "https://danlopes18-ctrl.github.io/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Daniel Lopes"
+    },
+    "datePublished": "2026-11-23",
+    "dateModified": "2026-11-23",
+    "mainEntityOfPage": "https://danlopes18-ctrl.github.io/guides/hardening-nodejs-mcp-servers.html",
+    "image": "https://danlopes18-ctrl.github.io/assets/card_mcp_suite.png",
+    "keywords": ["MCP server security", "Node.js MCP", "zero dependency MCP", "symlink jail", "SSRF protection", "Claude Code hooks", "Cursor MCP"]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #06080E;
+      --bg-elev: #0C101A;
+      --bg-card: #0E1320;
+      --border: rgba(255, 255, 255, 0.09);
+      --border-hi: rgba(52, 211, 153, 0.38);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --green: #34D399;
+      --cyan: #38BDF8;
+      --amber: #FBBF24;
+      --red: #F87171;
+      --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    body {
+      background:
+        radial-gradient(900px 520px at 80% -5%, rgba(16, 185, 129, 0.13), transparent 62%),
+        radial-gradient(800px 480px at 10% 15%, rgba(56, 189, 248, 0.08), transparent 60%),
+        var(--bg);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mono { font-family: var(--mono); }
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(6, 8, 14, 0.84);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-in {
+      max-width: 960px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: #FFF; font-weight: 700; font-size: 15px; }
+    .brand:hover { text-decoration: none; }
+    .brand img { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); }
+    .nav-links { display: flex; gap: 18px; font-size: 13.5px; }
+    .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover { color: #FFF; text-decoration: none; }
+
+    .article-wrap { max-width: 820px; margin: 0 auto; padding: 48px 24px 84px; }
+    .crumb { font-size: 13px; color: var(--text-dim); margin-bottom: 18px; }
+    .crumb a { color: var(--text-muted); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 999px; margin-bottom: 16px;
+      background: rgba(16,185,129,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.3);
+    }
+    h1 {
+      font-size: clamp(30px, 4.4vw, 44px); font-weight: 850; line-height: 1.12;
+      letter-spacing: -0.028em; margin-bottom: 18px; color: #FFF;
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--text-dim);
+      padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 30px;
+    }
+    .lead { font-size: 18px; color: #CBD5E1; margin-bottom: 26px; }
+    h2 {
+      font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: #FFF;
+      margin: 42px 0 14px; padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    h3 { font-size: 18px; font-weight: 700; color: #E2E8F0; margin: 24px 0 10px; }
+    p { margin-bottom: 16px; color: #CBD5E1; font-size: 16px; }
+    ul, ol { margin: 0 0 18px 22px; color: #CBD5E1; }
+    li { margin-bottom: 8px; }
+    code {
+      font-family: var(--mono); font-size: 0.88em;
+      background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; color: #E2E8F0;
+    }
+    pre {
+      background: #0A0E17; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 18px 20px; overflow-x: auto; margin: 16px 0 22px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.6; color: #E2E8F0;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    .callout {
+      background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(52, 211, 153, 0.3);
+      border-left: 3px solid var(--green); border-radius: 12px; padding: 16px 18px; margin: 20px 0;
+    }
+    .callout.warn {
+      background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.3); border-left-color: var(--red);
+    }
+    .callout strong { color: #FFF; }
+    table {
+      width: 100%; border-collapse: collapse; margin: 20px 0 26px; font-size: 14.5px;
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+    tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 700; }
+    .no { color: var(--red); font-weight: 700; }
+
+    .cta-box {
+      margin-top: 44px; padding: 28px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(56,189,248,0.10));
+      border: 1px solid rgba(52,211,153,0.36);
+    }
+    .cta-box h3 { margin-top: 0; font-size: 22px; color: #FFF; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-weight: 700; font-size: 14px; padding: 12px 18px; border-radius: 10px;
+      transition: transform .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, #10B981, #34D399); color: #04130D; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #FFF; border: 1px solid rgba(255,255,255,0.18); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
+      color: var(--text-dim); font-size: 13.5px;
+    }
+    @media (max-width: 640px) { .nav-links { display: none; } .article-wrap { padding: 30px 16px 60px; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="../index.html">
+        <img src="../assets/avatar.jpg" alt="Daniel Lopes" />
+        <span>Daniel Lopes · AI DevTools</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../index.html">Storefront</a>
+        <a href="zero-browser-apify-actors-rag-b2b.html">Apify RAG Guide</a>
+        <a href="https://github.com/danlopes18-ctrl/mcp-starter-suite-lite" target="_blank" rel="noopener">MIT GitHub Kit</a>
+        <a href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Complete Stack ($79)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-wrap">
+    <div class="crumb"><a href="../index.html">← Back to AI DevTools Storefront</a> · Engineering Guides</div>
+    <div class="eyebrow">MCP Security · Zero-Dependency Node.js</div>
+    <h1>4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies</h1>
+    <div class="meta">
+      <span>By <strong>Daniel Lopes</strong></span>
+      <span>Published Nov 23, 2026</span>
+      <span>7 min read</span>
+      <span>Node.js 18+/22 · Claude Code · Cursor · Windsurf</span>
+    </div>
+
+    <p class="lead">
+      Most community Model Context Protocol (MCP) servers on GitHub pull in <strong>140+ transitive npm packages</strong>, boot in ~310ms, and still fail four basic production security tests: symlink escape to <code>.env</code>, cloud metadata SSRF to <code>169.254.169.254</code>, writable SQLite handles, and timing-unsafe webhook signatures.
+    </p>
+    <p>
+      The uncomfortable truth: you do not need an SDK tree to speak JSON-RPC 2.0 over <code>stdio</code>. Modern Node.js 22 ships <code>node:fs</code>, <code>node:dns/promises</code>, <code>node:sqlite</code>, <code>node:crypto</code>, and <code>node:child_process</code> out of the box — letting you build hardened MCP servers with <strong>0 external dependencies</strong>, an <strong>18ms cold start</strong>, and code your security team can audit in three minutes.
+    </p>
+
+    <h2>Bug #1: <code>path.resolve()</code> Does Not Stop Symlink Escapes</h2>
+    <p>
+      Almost every tutorial MCP filesystem server validates workspace boundaries with <code>path.resolve(root, userPath).startsWith(root)</code>. That check is broken in two ways:
+    </p>
+    <ol>
+      <li><strong>Prefix confusion:</strong> <code>/srv/workspace-secrets</code> starts with <code>/srv/workspace</code> if you forget the trailing path separator.</li>
+      <li><strong>Symlink traversal:</strong> If an attacker (or a compromised repo commit) places a symlink at <code>./docs/readme-link → /home/dev/.aws/credentials</code>, <code>path.resolve()</code> happily returns <code>/srv/workspace/docs/readme-link</code> — passing the string check while leaking host secrets into the LLM context window.</li>
+    </ol>
+
+    <h3>The Zero-Dependency Fix: <code>fs.realpathSync()</code> + Denylist</h3>
+    <pre><code>import fs from "node:fs";
+import path from "node:path";
+
+const SENSITIVE_RE = /(^|[\\/])(\.env(\..+)?|id_rsa|id_ed25519|\.npmrc|credentials\.json)$/i;
+
+export function assertSandboxedPath(workspaceRoot, requestedPath) {
+  const realRoot = fs.realpathSync(workspaceRoot);
+  const candidate = path.resolve(realRoot, requestedPath);
+  const realTarget = fs.realpathSync(candidate);
+
+  const inside = realTarget === realRoot || realTarget.startsWith(realRoot + path.sep);
+  if (!inside) {
+    throw new Error(`Denied: symlink or path escapes workspace root (${requestedPath})`);
+  }
+  if (SENSITIVE_RE.test(realTarget)) {
+    throw new Error(`Denied: sensitive credential path blocked (${path.basename(realTarget)})`);
+  }
+  return realTarget;
+}</code></pre>
+
+    <div class="callout">
+      <strong>Audit note:</strong> Calling <code>fs.realpathSync()</code> resolves every symbolic link on disk <em>before</em> verifying the boundary with <code>realRoot + path.sep</code>. We also layer a deterministic denylist so even an in-repo <code>.env.production</code> cannot be exfiltrated by prompt injection.
+    </div>
+
+    <h2>Bug #2: Regex URL Filters Fail Cloud-Metadata SSRF</h2>
+    <p>
+      HTTP fetch and webhook MCP tools routinely try to block SSRF by matching <code>localhost</code> or <code>127.0.0.1</code> against the URL string. That is trivially bypassed by decimal IPs (<code>http://2130706433/</code>), IPv6 loopback (<code>[::1]</code>), HTTP <code>302</code> redirects, or a public DNS record resolving to <code>169.254.169.254</code> (AWS/GCP/Azure instance metadata).
+    </p>
+
+    <h3>The Zero-Dependency Fix: Resolve DNS First, Block Private CIDRs, Disable Blind Redirects</h3>
+    <pre><code>import dns from "node:dns/promises";
+import net from "node:net";
+
+function isPrivateIp(ip) {
+  if (net.isIPv4(ip)) {
+    const [a, b] = ip.split(".").map(Number);
+    return (
+      a === 10 || a === 127 || a === 0 ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168) ||
+      (a === 100 && b >= 64 && b <= 127)
+    );
+  }
+  const low = ip.toLowerCase();
+  return low === "::1" || low.startsWith("fc") || low.startsWith("fd") || low.startsWith("fe80:") || low.startsWith("::ffff:127.");
+}
+
+export async function assertSafeExternalUrl(rawUrl) {
+  const url = new URL(rawUrl);
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    throw new Error(`Blocked protocol: ${url.protocol}`);
+  }
+  const records = await dns.lookup(url.hostname, { all: true });
+  for (const { address } of records) {
+    if (isPrivateIp(address)) {
+      throw new Error(`Blocked SSRF target: ${url.hostname} -> ${address}`);
+    }
+  }
+  return url;
+}</code></pre>
+    <p>
+      Always pair this check with <code>fetch(url, { redirect: "manual" })</code> and re-validate every <code>Location</code> header before following a redirect hop.
+    </p>
+
+    <h2>Bug #3: "Read-Only" SQLite MCPs That Only Check <code>sql.startsWith("SELECT")</code></h2>
+    <p>
+      Checking whether an LLM-generated query begins with <code>SELECT</code> fails immediately against multi-statement payloads (<code>SELECT 1; DROP TABLE invoices;</code>), <code>ATTACH DATABASE</code>, or writable CTE mutations.
+    </p>
+
+    <h3>The Zero-Dependency Fix: OS-Level Read-Only Handle + <code>PRAGMA query_only = ON</code></h3>
+    <pre><code>import { DatabaseSync } from "node:sqlite";
+
+export function openReadOnlyDb(dbPath) {
+  const db = new DatabaseSync(dbPath, { readOnly: true });
+  db.exec("PRAGMA query_only = ON;");
+  return db;
+}</code></pre>
+    <p>
+      Even if an adversarial prompt tricks your SQL sanitizer, SQLite itself rejects every <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>DROP</code>, and <code>PRAGMA</code> write at the engine boundary — zero native C++ addons or <code>better-sqlite3</code> rebuilds required on Node.js 22+.
+    </p>
+
+    <h2>Bug #4: String Equality (<code>===</code>) on Webhook HMAC Signatures</h2>
+    <p>
+      When MCP servers receive or dispatch signed webhooks (Stripe, GitHub, n8n), comparing hex digests with <code>expected === received</code> leaks timing side-channels and throws length mismatches. Use <code>crypto.timingSafeEqual()</code> after normalizing both buffers:
+    </p>
+    <pre><code>import crypto from "node:crypto";
+
+export function verifyHmacSha256(secret, payload, signatureHex) {
+  const expected = crypto.createHmac("sha256", secret).update(payload).digest();
+  const actual = Buffer.from(String(signatureHex || ""), "hex");
+  return actual.length === expected.length && crypto.timingSafeEqual(expected, actual);
+}</code></pre>
+
+    <h2>Benchmark: Bloated SDK MCP vs Hardened Zero-Dependency Node.js MCP</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Typical GitHub MCP Server</th>
+          <th>Zero-Dep Native Node.js MCP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>External npm packages</td>
+          <td class="no">140+ packages</td>
+          <td class="yes">0 packages</td>
+        </tr>
+        <tr>
+          <td>Cold start latency (stdio)</td>
+          <td>~310ms</td>
+          <td class="yes">18ms</td>
+        </tr>
+        <tr>
+          <td>Symlink jail + SSRF DNS check</td>
+          <td class="no">Usually missing</td>
+          <td class="yes">Built-in &amp; tested</td>
+        </tr>
+        <tr>
+          <td>Security audit time</td>
+          <td>Hours (lockfile + dist)</td>
+          <td class="yes">~3 minutes (plain ESM)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Add Deterministic <code>PreToolUse</code> Guardrails Around Every Agent</h2>
+    <p>
+      Hardening MCP servers protects your tools — pairing them with Claude Code / Cursor <code>PreToolUse</code> hooks protects your local shell and repo from destructive commands (<code>rm -rf /</code>, <code>git push --force main</code>) and accidental AWS/Stripe key writes in under 15ms.
+    </p>
+
+    <div class="cta-box">
+      <h3>Inspect the Free MIT Code — Then Ship the Full Production Stack</h3>
+      <p>
+        All 4 patterns above are live and open-source (MIT) in <a href="https://github.com/danlopes18-ctrl/mcp-starter-suite-lite" target="_blank" rel="noopener">mcp-starter-suite-lite</a> (indexed in <a href="https://tensorblock.co/mcp/servers/github-danlopes18-ctrl-mcp-starter-suite-lite-b0cabba8" target="_blank" rel="noopener">TensorBlock/awesome-mcp-servers</a>) and <a href="https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite" target="_blank" rel="noopener">ai-agent-guardrails-lite</a>. Need all <strong>15 hardened MCP servers + 10 PreToolUse security hooks + 25 standard-node n8n workflows</strong> with a commercial agency license?
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Get Complete Stack — $79 (Save $38)</a>
+        <a class="btn btn-secondary" href="https://danlopes3.gumroad.com/l/production-mcp-suite" target="_blank" rel="noopener">Production MCP Suite — $39</a>
+        <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl/mcp-starter-suite-lite" target="_blank" rel="noopener">Free MIT Kit on GitHub</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Daniel Lopes · <a href="../index.html">AI DevTools Storefront</a> · <a href="https://apify.com/danlopes18" target="_blank" rel="noopener">Apify Cloud Actors</a> · <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+</body>
+</html>

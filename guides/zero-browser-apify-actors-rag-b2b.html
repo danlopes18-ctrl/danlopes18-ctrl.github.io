@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Why Headless Browser Scrapers Burn Compute: 174ms Zero-Browser Apify Actors for RAG &amp; B2B · Daniel Lopes</title>
+  <meta name="description" content="Benchmarking zero-browser Node.js 22 Apify Actors vs headless Chromium for RAG Markdown crawling, llms.txt AI-readiness audits, GitHub org enrichment, RSS feeds, and B2B contact extraction." />
+  <meta name="theme-color" content="#06080E" />
+  <link rel="canonical" href="https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html" />
+  <meta property="og:title" content="Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Apify Actors" />
+  <meta property="og:description" content="Cut RAM and scrape latency by 10x+ for RAG pipelines, llms.txt audits, RSS intelligence, GitHub velocity scoring, and B2B contact extraction." />
+  <meta property="og:image" content="https://danlopes18-ctrl.github.io/assets/card_ts_perf.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@FelipeDani9353" />
+  <meta name="twitter:title" content="174ms Zero-Browser Node.js Apify Actors for RAG, llms.txt &amp; B2B Enrichment" />
+  <meta name="twitter:description" content="Stop spinning up 600MB Chromium instances for HTML, sitemaps, RSS feeds, and B2B contact pages." />
+  <meta name="twitter:image" content="https://danlopes18-ctrl.github.io/assets/card_ts_perf.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Node.js Apify Actors for RAG, llms.txt Audits & B2B Lead Enrichment",
+    "description": "Engineering architecture and pay-per-event benchmarks for 5 zero-browser Node.js 22 Apify Actors built for AI agents, MCP clients, n8n workflows, and B2B enrichment.",
+    "author": {
+      "@type": "Person",
+      "name": "Daniel Lopes",
+      "url": "https://danlopes18-ctrl.github.io/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Daniel Lopes"
+    },
+    "datePublished": "2026-11-23",
+    "dateModified": "2026-11-23",
+    "mainEntityOfPage": "https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html",
+    "image": "https://danlopes18-ctrl.github.io/assets/card_ts_perf.png",
+    "keywords": ["Apify Actors", "zero browser scraper", "LLM Markdown crawler", "llms.txt auditor", "B2B contact extractor", "RAG crawler", "MCP Apify", "n8n enrichment"]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #06080E;
+      --bg-elev: #0C101A;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --green: #34D399;
+      --cyan: #38BDF8;
+      --amber: #FBBF24;
+      --red: #F87171;
+      --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    body {
+      background:
+        radial-gradient(900px 520px at 80% -5%, rgba(56, 189, 248, 0.13), transparent 62%),
+        radial-gradient(800px 480px at 10% 18%, rgba(16, 185, 129, 0.10), transparent 60%),
+        var(--bg);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mono { font-family: var(--mono); }
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(6, 8, 14, 0.84);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-in {
+      max-width: 960px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: #FFF; font-weight: 700; font-size: 15px; }
+    .brand:hover { text-decoration: none; }
+    .brand img { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); }
+    .nav-links { display: flex; gap: 18px; font-size: 13.5px; }
+    .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover { color: #FFF; text-decoration: none; }
+
+    .article-wrap { max-width: 840px; margin: 0 auto; padding: 48px 24px 84px; }
+    .crumb { font-size: 13px; color: var(--text-dim); margin-bottom: 18px; }
+    .crumb a { color: var(--text-muted); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 999px; margin-bottom: 16px;
+      background: rgba(56,189,248,0.12); color: var(--cyan); border: 1px solid rgba(56,189,248,0.32);
+    }
+    h1 {
+      font-size: clamp(30px, 4.3vw, 43px); font-weight: 850; line-height: 1.12;
+      letter-spacing: -0.028em; margin-bottom: 18px; color: #FFF;
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--text-dim);
+      padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 30px;
+    }
+    .lead { font-size: 18px; color: #CBD5E1; margin-bottom: 26px; }
+    h2 {
+      font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: #FFF;
+      margin: 42px 0 14px; padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    h3 { font-size: 18px; font-weight: 700; color: #E2E8F0; margin: 24px 0 10px; }
+    p { margin-bottom: 16px; color: #CBD5E1; font-size: 16px; }
+    ul { margin: 0 0 18px 22px; color: #CBD5E1; }
+    li { margin-bottom: 8px; }
+    code {
+      font-family: var(--mono); font-size: 0.88em;
+      background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; color: #E2E8F0;
+    }
+    pre {
+      background: #0A0E17; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 18px 20px; overflow-x: auto; margin: 16px 0 22px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.6; color: #E2E8F0;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin: 20px 0 26px; font-size: 14.5px;
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    th, td { padding: 13px 15px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 700; }
+    .no { color: var(--red); font-weight: 700; }
+
+    .actor-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 22px 0; }
+    .actor-card {
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px;
+      transition: border-color .15s ease;
+    }
+    .actor-card:hover { border-color: rgba(52,211,153,0.4); }
+    .actor-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .actor-top h3 { margin: 0; font-size: 18px; color: #FFF; }
+    .price-pill {
+      font-family: var(--mono); font-size: 12.5px; font-weight: 700;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(16,185,129,0.14); color: var(--green); border: 1px solid rgba(52,211,153,0.3);
+    }
+    .actor-links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; font-size: 13.5px; font-weight: 600; }
+
+    .cta-box {
+      margin-top: 44px; padding: 28px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(56,189,248,0.14), rgba(16,185,129,0.12));
+      border: 1px solid rgba(56,189,248,0.36);
+    }
+    .cta-box h3 { margin-top: 0; font-size: 22px; color: #FFF; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-weight: 700; font-size: 14px; padding: 12px 18px; border-radius: 10px;
+      transition: transform .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, #10B981, #34D399); color: #04130D; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #FFF; border: 1px solid rgba(255,255,255,0.18); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
+      color: var(--text-dim); font-size: 13.5px;
+    }
+    @media (max-width: 640px) { .nav-links { display: none; } .article-wrap { padding: 30px 16px 60px; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="../index.html">
+        <img src="../assets/avatar.jpg" alt="Daniel Lopes" />
+        <span>Daniel Lopes · AI DevTools</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../index.html">Storefront</a>
+        <a href="hardening-nodejs-mcp-servers.html">MCP Security Guide</a>
+        <a href="https://apify.com/danlopes18" target="_blank" rel="noopener">Apify Store</a>
+        <a href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Complete Stack ($79)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-wrap">
+    <div class="crumb"><a href="../index.html">← Back to AI DevTools Storefront</a> · Engineering Guides</div>
+    <div class="eyebrow">Apify Cloud · RAG · B2B Enrichment · MCP</div>
+    <h1>Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Apify Actors</h1>
+    <div class="meta">
+      <span>By <strong>Daniel Lopes</strong></span>
+      <span>Published Nov 23, 2026</span>
+      <span>6 min read</span>
+      <span>Node.js 22 · Apify Pay-per-Event · MCP · n8n</span>
+    </div>
+
+    <p class="lead">
+      Every week, AI teams launch 1GB Playwright/Puppeteer containers just to extract Markdown from documentation sitemaps, audit <code>llms.txt</code> and security headers, monitor RSS feeds, or scrape <code>/contact</code> pages for B2B emails. For 90% of AI data pipelines, spinning up Chromium is pure latency and compute waste.
+    </p>
+    <p>
+      By running native Node.js 22 HTTP streaming, strict DNS-level SSRF protection, and deterministic HTML/XML parsers inside slim 256MB Apify containers, we dropped per-domain latency to <strong>174ms–625ms</strong> while keeping Pay-per-Event pricing between <strong>$2 and $6 per 1,000 results</strong>.
+    </p>
+
+    <h2>Headless Chromium vs Zero-Browser Node.js 22</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Playwright / Puppeteer Actor</th>
+          <th>Zero-Browser Node.js 22 Actor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Container RAM per run</td>
+          <td class="no">1,024 MB – 4,096 MB</td>
+          <td class="yes">128 MB – 256 MB</td>
+        </tr>
+        <tr>
+          <td>Typical domain/page latency</td>
+          <td>3,500ms – 9,000ms</td>
+          <td class="yes">174ms – 650ms</td>
+        </tr>
+        <tr>
+          <td>Cold image startup</td>
+          <td>6–14 seconds</td>
+          <td class="yes">&lt; 1.5 seconds</td>
+        </tr>
+        <tr>
+          <td>MCP / n8n real-time tool suitability</td>
+          <td class="no">Often hits tool timeouts</td>
+          <td class="yes">Instant JSON responses</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5 Production Zero-Browser Actors (Ready for API, MCP &amp; n8n)</h2>
+    <p>
+      Every Actor below is open-source auditable on GitHub, runs with zero browser binaries, blocks private/SSRF IPs, and publishes a live <strong>ready-to-run Task Example</strong> on Apify Store:
+    </p>
+
+    <div class="actor-grid">
+      <article class="actor-card">
+        <div class="actor-top">
+          <h3>1. Website Tech Stack, Security &amp; AI-Readiness (<code>llms.txt</code>) Auditor</h3>
+          <span class="price-pill">$5.00 / 1,000 domains</span>
+        </div>
+        <p>Detects 25+ frameworks/CDNs/analytics, grades 7 HTTP security headers (HSTS, CSP, XFO, XCTO, Referrer-Policy, Permissions-Policy, COOP), and audits <code>llms.txt</code>, <code>robots.txt</code> AI crawler directives (GPTBot, ClaudeBot, PerplexityBot), JSON-LD schema, and sitemaps.</p>
+        <div class="actor-links">
+          <a href="https://apify.com/danlopes18/apify-site-intel-ai-auditor" target="_blank" rel="noopener">Open on Apify Store →</a>
+          <a href="https://apify.com/danlopes18/apify-site-intel-ai-auditor/examples/apify-site-intel-ai-auditor-task" target="_blank" rel="noopener">Live Task Example</a>
+          <a href="https://github.com/danlopes18-ctrl/apify-site-intel-ai-auditor" target="_blank" rel="noopener">Source (GitHub)</a>
+        </div>
+      </article>
+
+      <article class="actor-card">
+        <div class="actor-top">
+          <h3>2. Fast LLM-Ready Markdown &amp; Sitemap Crawler (RAG / MCP)</h3>
+          <span class="price-pill">$3.00 / 1,000 pages</span>
+        </div>
+        <p>Converts documentation portals, blogs, and XML sitemaps into clean, boilerplate-stripped Markdown with exact heading hierarchy, word counts, and LLM token estimates — built for RAG ingestion, Claude Code, Cursor, and n8n.</p>
+        <div class="actor-links">
+          <a href="https://apify.com/danlopes18/apify-llm-markdown-crawler" target="_blank" rel="noopener">Open on Apify Store →</a>
+          <a href="https://apify.com/danlopes18/apify-llm-markdown-crawler/examples/apify-llm-markdown-crawler-task" target="_blank" rel="noopener">Live Task Example</a>
+          <a href="https://github.com/danlopes18-ctrl/apify-llm-markdown-crawler" target="_blank" rel="noopener">Source (GitHub)</a>
+        </div>
+      </article>
+
+      <article class="actor-card">
+        <div class="actor-top">
+          <h3>3. GitHub Organization &amp; Open-Source Repo Intelligence</h3>
+          <span class="price-pill">$4.00 / 1,000 orgs/repos</span>
+        </div>
+        <p>Enriches developer-tool leads with repository velocity scores, dominant languages, funding/sponsor signals, public contacts, and AI/MCP/Agent adoption markers — zero browser scraping.</p>
+        <div class="actor-links">
+          <a href="https://apify.com/danlopes18/apify-github-devtool-org-intel" target="_blank" rel="noopener">Open on Apify Store →</a>
+          <a href="https://apify.com/danlopes18/apify-github-devtool-org-intel/examples/apify-github-devtool-org-intel-task" target="_blank" rel="noopener">Live Task Example</a>
+          <a href="https://github.com/danlopes18-ctrl/apify-github-devtool-org-intel" target="_blank" rel="noopener">Source (GitHub)</a>
+        </div>
+      </article>
+
+      <article class="actor-card">
+        <div class="actor-top">
+          <h3>4. RSS, Atom &amp; Blog News Intelligence Aggregator (AI / MCP)</h3>
+          <span class="price-pill">$2.00 / 1,000 articles</span>
+        </div>
+        <p>Auto-discovers RSS 2.0, Atom, and JSON Feeds from any blog homepage or direct feed URL, deduplicates items, filters by keyword/recency, and returns clean LLM-ready summaries for automated briefings and monitoring.</p>
+        <div class="actor-links">
+          <a href="https://apify.com/danlopes18/apify-rss-news-ai-monitor" target="_blank" rel="noopener">Open on Apify Store →</a>
+          <a href="https://apify.com/danlopes18/apify-rss-news-ai-monitor/examples/apify-rss-news-ai-monitor-task" target="_blank" rel="noopener">Live Task Example</a>
+          <a href="https://github.com/danlopes18-ctrl/apify-rss-news-ai-monitor" target="_blank" rel="noopener">Source (GitHub)</a>
+        </div>
+      </article>
+
+      <article class="actor-card">
+        <div class="actor-top">
+          <h3>5. B2B Company Contact, Email, Phone &amp; Social Profile Extractor</h3>
+          <span class="price-pill">$6.00 / 1,000 companies</span>
+        </div>
+        <p>Multi-page zero-browser crawler scanning homepages plus <code>/contact</code>, <code>/about</code>, and <code>/team</code> to extract public emails (classified as role vs personal, junk domains filtered), international phones, WhatsApp/Calendly booking links, and verified LinkedIn/X/GitHub/Instagram/YouTube handles.</p>
+        <div class="actor-links">
+          <a href="https://apify.com/danlopes18/apify-b2b-contact-social-extractor" target="_blank" rel="noopener">Open on Apify Store →</a>
+          <a href="https://apify.com/danlopes18/apify-b2b-contact-social-extractor/examples/apify-b2b-contact-social-extractor-task" target="_blank" rel="noopener">Live Task Example</a>
+          <a href="https://github.com/danlopes18-ctrl/apify-b2b-contact-social-extractor" target="_blank" rel="noopener">Source (GitHub)</a>
+        </div>
+      </article>
+    </div>
+
+    <h2>Trigger Any Actor Directly From Claude Code, Cursor, or n8n</h2>
+    <p>
+      Because every Actor finishes in under a second per URL, you can call them synchronously from an n8n HTTP Request node or directly from your AI coding agent via Apify's MCP endpoint:
+    </p>
+    <pre><code>curl -X POST "https://api.apify.com/v2/acts/danlopes18~apify-site-intel-ai-auditor/run-sync-get-dataset-items?token=$APIFY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{ "urls": ["https://danlopes18-ctrl.github.io/"] }'</code></pre>
+
+    <div class="cta-box">
+      <h3>Pair These Cloud Actors With 25 Standard-Node n8n Workflows &amp; Hardened MCPs</h3>
+      <p>
+        Want ready-to-import n8n pipelines (Lead Qualification, SEO Briefs, GitHub PR Reviews) plus a zero-dependency MCP Webhook Runner? Start with the free MIT Lite kit or grab the Complete AI Engineering Stack.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://apify.com/danlopes18" target="_blank" rel="noopener">Explore All 5 Apify Actors →</a>
+        <a class="btn btn-secondary" href="https://danlopes3.gumroad.com/l/ai-automation-vault" target="_blank" rel="noopener">25 n8n Workflows Vault — $29</a>
+        <a class="btn btn-secondary" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Complete Stack — $79 (Save $38)</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Daniel Lopes · <a href="../index.html">AI DevTools Storefront</a> · <a href="hardening-nodejs-mcp-servers.html">MCP Security Guide</a> · <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+</body>
+</html>
