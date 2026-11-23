@@ -1,36 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daniel Lopes — Production AI Engineering Tools, Zero-Dependency MCP Servers, n8n Workflows &amp; Claude Code Guardrails</title>
-  <meta name="description" content="Zero-dependency Node.js MCP servers, official standard-node n8n automation workflows, and executable PreToolUse security hooks for Claude Code, Cursor, Windsurf, and Antigravity. Open-source MIT starter kits &amp; commercial Pro suites." />
-  <meta property="og:title" content="Production AI Engineering Stack — Zero-Dependency MCP Servers, n8n Vault &amp; AI Coding Guardrails" />
-  <meta property="og:description" content="3 open-source MIT developer kits + Commercial Pro Suites (zero npm install, 100% live QA verified). Save $38 with the Complete AI Engineering Stack Bundle." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daniel Lopes · Zero-Dependency AI Engineering Kits (MCP, Guardrails &amp; n8n)</title>
+  <meta name="description" content="Production-hardened zero-dependency Node.js MCP servers, Claude Code PreToolUse security hooks, and standard-node n8n workflows. Try 3 MIT kits free or get the Complete Stack ($79)." />
+  <meta name="theme-color" content="#06080E" />
+  <link rel="canonical" href="https://danlopes18-ctrl.github.io/" />
+
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://danlopes18-ctrl.github.io/" />
+  <meta property="og:title" content="Daniel Lopes · Zero-Dependency AI Engineering Stack" />
+  <meta property="og:description" content="Hardened native Node.js MCP servers, Claude Code PreToolUse security hooks &amp; 25 n8n workflows. Zero npm install. Free MIT kits + Complete Pro Stack ($79)." />
+  <meta property="og:image" content="https://danlopes18-ctrl.github.io/assets/card_guardrails.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="canonical" href="https://danlopes18-ctrl.github.io/" />
+  <meta name="twitter:site" content="@FelipeDani9353" />
+  <meta name="twitter:title" content="Zero-Dependency AI Engineering Kits — MCP, Guardrails &amp; n8n" />
+  <meta name="twitter:description" content="4 real agent attacks blocked in <15ms with 0 npm deps. Try 3 MIT kits free or save $38 on the Complete Pro Stack." />
+  <meta name="twitter:image" content="https://danlopes18-ctrl.github.io/assets/card_guardrails.png" />
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "Production AI Engineering Stack by Daniel Lopes",
+    "name": "Daniel Lopes AI DevTools Production Suites",
+    "url": "https://danlopes18-ctrl.github.io/",
     "itemListElement": [
       {
         "@type": "SoftwareApplication",
         "position": 1,
         "name": "Complete AI Engineering Stack Bundle",
         "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Windows, macOS, Linux",
+        "operatingSystem": "Cross-Platform",
         "offers": { "@type": "Offer", "price": "79.00", "priceCurrency": "USD", "url": "https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" }
       },
       {
         "@type": "SoftwareApplication",
         "position": 2,
         "name": "AI Coding Guardrails & Engineering OS",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Windows, macOS, Linux",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Cross-Platform",
         "offers": { "@type": "Offer", "price": "49.00", "priceCurrency": "USD", "url": "https://danlopes3.gumroad.com/l/ai-coding-guardrails-os" }
       },
       {
@@ -38,321 +47,817 @@
         "position": 3,
         "name": "Production MCP Server Suite",
         "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Windows, macOS, Linux",
+        "operatingSystem": "Cross-Platform",
         "offers": { "@type": "Offer", "price": "39.00", "priceCurrency": "USD", "url": "https://danlopes3.gumroad.com/l/production-mcp-suite" }
       },
       {
         "@type": "SoftwareApplication",
         "position": 4,
         "name": "AI Agency & DevOps Automation Vault",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Windows, macOS, Linux",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Cross-Platform",
         "offers": { "@type": "Offer", "price": "29.00", "priceCurrency": "USD", "url": "https://danlopes3.gumroad.com/l/ai-automation-vault" }
       }
     ]
   }
   </script>
+
   <style>
     :root {
-      --bg: #080c14;
-      --surface: #0f1623;
-      --surface-2: #151f31;
-      --border: #1e2d45;
-      --text: #edf2f7;
-      --muted: #94a3b8;
-      --cyan: #06b6d4;
-      --emerald: #10b981;
-      --violet: #6366f1;
-      --gold: #f59e0b;
+      --bg: #06080E;
+      --bg-elev: #0C101A;
+      --bg-card: #0E1320;
+      --border: rgba(255, 255, 255, 0.09);
+      --border-hi: rgba(52, 211, 153, 0.38);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --green: #34D399;
+      --green-strong: #10B981;
+      --cyan: #38BDF8;
+      --amber: #FBBF24;
+      --red: #F87171;
+      --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      --radius: 16px;
+      --max: 1180px;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: clip; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at 20% 0%, #10203a 0%, var(--bg) 45%), var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(1000px 560px at 82% -8%, rgba(16, 185, 129, 0.14), transparent 62%),
+        radial-gradient(900px 540px at 8% 18%, rgba(56, 189, 248, 0.09), transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+      overflow-x: clip;
+      line-height: 1.55;
     }
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    }
+
     a { color: inherit; text-decoration: none; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-    header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(8, 12, 20, 0.85);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
+    img { max-width: 100%; display: block; }
+    .mono { font-family: var(--mono); }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
     .nav {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 68px; gap: 16px;
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(6, 8, 14, 0.78);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
     }
-    .brand { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px; }
-    .brand-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--emerald); box-shadow: 0 0 12px var(--emerald); }
-    .nav-links { display: flex; gap: 20px; align-items: center; font-size: 0.92rem; color: var(--muted); }
-    .nav-links a:hover { color: var(--text); }
+    .nav-in {
+      max-width: var(--max); margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.16); object-fit: cover; }
+    .brand-tag {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 8px; border-radius: 6px;
+      background: rgba(16,185,129,0.14); color: var(--green); border: 1px solid rgba(52,211,153,0.3);
+    }
+    .nav-links { display: flex; align-items: center; gap: 26px; font-size: 14px; color: var(--text-muted); }
+    .nav-links a:hover { color: #FFF; }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    /* Buttons */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 11px 18px; border-radius: 10px; font-weight: 700; font-size: 0.92rem;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      cursor: pointer; border: 1px solid transparent;
+      font-weight: 700; font-size: 14px; padding: 11px 18px; border-radius: 10px;
+      border: 1px solid transparent; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      white-space: nowrap;
     }
     .btn:hover { transform: translateY(-1px); }
-    .btn-gold { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #090d16; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25); }
-    .btn-primary { background: linear-gradient(135deg, var(--emerald), #059669); color: #04130d; }
-    .btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
-    .btn-outline:hover { border-color: var(--cyan); background: rgba(6, 182, 212, 0.08); }
+    .btn-primary {
+      background: linear-gradient(135deg, #10B981, #34D399);
+      color: #04130D;
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.25);
+    }
+    .btn-primary:hover { box-shadow: 0 14px 36px rgba(52, 211, 153, 0.36); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.05); color: #F1F5F9; border-color: rgba(255,255,255,0.14);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.28); }
+    .btn-ghost {
+      background: transparent; color: var(--text-muted); border-color: rgba(255,255,255,0.1); padding: 9px 14px; font-size: 13px;
+    }
+    .btn-ghost:hover { color: #FFF; border-color: rgba(255,255,255,0.24); }
+    .btn-lg { padding: 14px 24px; font-size: 15px; border-radius: 12px; }
 
-    .hero { padding: 72px 0 56px; text-align: center; }
-    .pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 700;
-      border: 1px solid rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.1); color: #fcd34d;
-      margin-bottom: 20px; letter-spacing: 0.03em; text-transform: uppercase;
+    /* Hero */
+    .hero { padding: 56px 0 42px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 40px; align-items: center; }
+    .hero-grid > *, .suite-card > *, .bundle-box > *, .craft-card > * { min-width: 0; }
+    .trust-pill {
+      display: inline-flex; align-items: center; gap: 9px; max-width: 100%;
+      padding: 7px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+      background: rgba(16,185,129,0.10); border: 1px solid rgba(52,211,153,0.34); color: #A7F3D0;
+      margin-bottom: 20px; transition: border-color .15s ease, background .15s ease;
     }
-    h1 {
-      font-size: clamp(2.1rem, 4.5vw, 3.4rem);
-      font-weight: 900; letter-spacing: -0.035em; line-height: 1.1;
-      max-width: 860px; margin: 0 auto 20px;
+    .trust-pill:hover { background: rgba(16,185,129,0.17); border-color: rgba(52,211,153,0.6); }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 0 0 rgba(52,211,153,0.7);
+      animation: pulse 2s infinite;
     }
-    .grad { background: linear-gradient(90deg, #38bdf8, #34d399, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { color: var(--muted); max-width: 680px; margin: 0 auto 30px; font-size: 1.08rem; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 36px; }
-    .stats {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px;
-      max-width: 820px; margin: 0 auto;
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52,211,153,0.65); }
+      70% { box-shadow: 0 0 0 9px rgba(52,211,153,0); }
+      100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
     }
-    .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
-    .stat strong { display: block; font-size: 1.3rem; color: var(--text); }
-    .stat span { font-size: 0.82rem; color: var(--muted); }
+    .hero h1 {
+      font-size: clamp(34px, 4.4vw, 54px); font-weight: 850; line-height: 1.06;
+      letter-spacing: -0.032em; margin-bottom: 18px;
+      background: linear-gradient(180deg, #FFFFFF 45%, #94A3B8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, #34D399, #38BDF8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub { font-size: 17px; color: var(--text-muted); max-width: 540px; margin-bottom: 26px; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--text-dim);
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .hero-meta span strong { color: #E2E8F0; font-weight: 700; }
 
-    .section { padding: 48px 0; }
-    .section-title { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
-    .section-sub { color: var(--muted); margin-bottom: 28px; }
+    /* Interactive Terminal Simulator */
+    .sim-shell {
+      background: #0B0F18;
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(52,211,153,0.08);
+    }
+    .sim-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: #121724; border-bottom: 1px solid var(--border);
+    }
+    .sim-dots { display: flex; gap: 7px; }
+    .sim-dots i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+    .sim-title { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .sim-armed { font-size: 11.5px; color: var(--green); font-weight: 700; letter-spacing: 0.06em; }
+    .sim-controls {
+      padding: 14px 16px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);
+    }
+    .sim-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 10px; font-weight: 700; }
+    .sim-btns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .atk-btn {
+      text-align: left; font-family: var(--mono); font-size: 12px; font-weight: 600;
+      padding: 9px 11px; border-radius: 9px; cursor: pointer;
+      background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(248, 113, 113, 0.25); color: #FECACA;
+      transition: all .14s ease; display: flex; align-items: center; justify-content: space-between; gap: 6px;
+    }
+    .atk-btn:hover, .atk-btn.active {
+      background: rgba(239, 68, 68, 0.19); border-color: rgba(248, 113, 113, 0.65); color: #FFF;
+      transform: translateY(-1px);
+    }
+    .atk-btn span.run-tag { font-size: 10px; opacity: 0.85; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.35); }
+    .sim-screen {
+      padding: 18px 18px 20px; min-height: 222px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+    }
+    .term-cmd { color: #CBD5E1; word-break: break-word; }
+    .term-cmd .p { color: var(--green); font-weight: 700; }
+    .term-block {
+      background: rgba(239, 68, 68, 0.09); border: 1px solid rgba(248,113,113,0.3);
+      border-left: 3px solid #EF4444; border-radius: 10px; padding: 12px 14px;
+    }
+    .term-block-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .term-hook { color: #FFF; font-weight: 700; font-size: 12.5px; }
+    .term-badge { background: rgba(239,68,68,0.24); color: #FCA5A5; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 5px; }
+    .term-line { color: #CBD5E1; font-size: 12px; }
+    .term-line .bad { color: #FCA5A5; font-weight: 700; }
+    .term-line .ok { color: var(--green); font-weight: 700; }
+    .sim-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+      padding: 10px 16px; background: #090C14; border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--text-dim);
+    }
+    .sim-foot strong { color: var(--green); }
 
-    .bundle-card {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(16, 185, 129, 0.08) 55%, rgba(6, 182, 212, 0.1));
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      border-radius: 18px; padding: 32px;
-      display: grid; grid-template-columns: 1.3fr 0.9fr; gap: 28px; align-items: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    /* Authority Strip */
+    .proof-strip { padding: 14px 0 44px; }
+    .proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .proof-tile {
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px;
+      padding: 18px 18px; display: flex; flex-direction: column; gap: 4px;
     }
-    @media (max-width: 840px) { .bundle-card { grid-template-columns: 1fr; } }
-    .bundle-price { display: flex; align-items: baseline; gap: 12px; margin: 14px 0 18px; }
-    .bundle-price .now { font-size: 2.5rem; font-weight: 900; color: #fbbf24; }
-    .bundle-price .was { font-size: 1.2rem; color: var(--muted); text-decoration: line-through; }
-    .bundle-price .save { font-size: 0.85rem; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: rgba(16, 185, 129, 0.18); color: #34d399; }
-    .check-list { list-style: none; display: grid; gap: 8px; margin-bottom: 22px; font-size: 0.94rem; }
-    .check-list li::before { content: "✓ "; color: var(--emerald); font-weight: 900; }
+    .proof-tile strong { font-size: 18px; font-weight: 800; color: #FFF; letter-spacing: -0.02em; }
+    .proof-tile span { font-size: 13px; color: var(--text-muted); }
+    .proof-tile a { color: var(--green); font-weight: 600; font-size: 12.5px; margin-top: 4px; display: inline-block; }
+    .proof-tile a:hover { text-decoration: underline; }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 22px; }
-    .card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-      padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+    /* Section Headings */
+    .sec { padding: 54px 0; }
+    .sec-head { max-width: 680px; margin-bottom: 34px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--green); margin-bottom: 10px;
     }
-    .card:hover { border-color: #334e75; transform: translateY(-2px); }
-    .tag {
-      display: inline-block; font-size: 0.75rem; font-weight: 800; padding: 4px 10px;
-      border-radius: 999px; margin-bottom: 12px; letter-spacing: 0.03em; text-transform: uppercase;
-    }
-    .tag-cyan { background: rgba(6, 182, 212, 0.14); color: #38bdf8; }
-    .tag-violet { background: rgba(99, 102, 241, 0.16); color: #a5b4fc; }
-    .tag-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-    .card h3 { font-size: 1.24rem; font-weight: 800; margin-bottom: 8px; }
-    .card p { color: var(--muted); font-size: 0.93rem; margin-bottom: 16px; }
-    .card-price { font-size: 1.6rem; font-weight: 900; margin-bottom: 14px; }
-    .card-actions { display: grid; gap: 10px; }
+    .sec-head h2 { font-size: clamp(26px, 3.2vw, 38px); font-weight: 850; letter-spacing: -0.03em; line-height: 1.12; margin-bottom: 10px; }
+    .sec-head p { color: var(--text-muted); font-size: 16px; }
 
-    .terminal {
-      background: #060910; border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    /* Product Cards */
+    .suites-stack { display: flex; flex-direction: column; gap: 28px; }
+    .suite-card {
+      background: linear-gradient(180deg, rgba(16,22,36,0.92), rgba(11,15,24,0.98));
+      border: 1px solid var(--border); border-radius: 22px; overflow: hidden;
+      display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr); align-items: stretch;
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
-    .term-tabs { display: flex; border-bottom: 1px solid var(--border); background: #0c1220; flex-wrap: wrap; }
-    .term-tab {
-      padding: 11px 18px; font-size: 0.84rem; font-weight: 700; color: var(--muted);
-      background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent;
+    .suite-card:hover { border-color: rgba(255,255,255,0.19); box-shadow: 0 24px 64px rgba(0,0,0,0.45); }
+    .suite-card.featured { border-color: rgba(52,211,153,0.34); }
+    .suite-visual {
+      background: #070A11; padding: 22px; display: flex; align-items: center; justify-content: center;
+      border-right: 1px solid var(--border);
     }
-    .term-tab.active { color: var(--emerald); border-bottom-color: var(--emerald); background: rgba(16, 185, 129, 0.06); }
-    pre {
-      padding: 20px; overflow-x: auto; font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
-      font-size: 0.86rem; color: #d1fae5; line-height: 1.65;
+    .suite-visual img {
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55); width: 100%; height: auto;
     }
+    .suite-body { padding: 28px 30px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; }
+    .suite-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .chip {
+      font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(52,211,153,0.35);
+      background: rgba(16,185,129,0.12); color: var(--green);
+    }
+    .chip.cyan { border-color: rgba(56,189,248,0.38); background: rgba(14,165,233,0.12); color: #7DD3FC; }
+    .chip.amber { border-color: rgba(251,191,36,0.38); background: rgba(245,158,11,0.12); color: #FCD34D; }
+    .price-tag { font-size: 26px; font-weight: 900; letter-spacing: -0.03em; color: #FFF; }
+    .price-tag small { font-size: 12.5px; font-weight: 600; color: var(--text-dim); margin-left: 4px; }
+    .suite-body h3 { font-size: 23px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .suite-desc { font-size: 14.5px; color: var(--text-muted); margin-bottom: 14px; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; font-size: 13.5px; color: #CBD5E1; margin-bottom: 16px; line-height: 1.5; }
+    .feat-list li { position: relative; padding-left: 20px; display: block; }
+    .feat-list li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--green); font-weight: 900; }
+    .feat-list strong { color: #F8FAFC; }
+
+    .cli-box {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: #070A12; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+      padding: 9px 12px; font-family: var(--mono); font-size: 12px; color: #A7F3D0;
+      margin-bottom: 14px; overflow: hidden; max-width: 100%; min-width: 0;
+    }
+    .cli-box code { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
+    .copy-btn {
+      flex-shrink: 0; font-family: var(--sans); font-size: 11.5px; font-weight: 700;
+      background: rgba(255,255,255,0.08); color: #F8FAFC; border: 1px solid rgba(255,255,255,0.14);
+      padding: 5px 10px; border-radius: 7px; cursor: pointer;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.15); }
+    .suite-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    /* Bundle Spotlight */
+    .bundle-box {
+      position: relative;
+      background:
+        radial-gradient(680px 320px at 88% 15%, rgba(16,185,129,0.22), transparent 65%),
+        linear-gradient(135deg, #0E1726 0%, #0A101B 100%);
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      border-radius: 24px;
+      padding: 40px 42px;
+      display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 36px; align-items: center;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 40px rgba(16, 185, 129, 0.12);
+    }
+    .bundle-box h2 { font-size: clamp(26px, 3.2vw, 38px); font-weight: 900; letter-spacing: -0.03em; margin: 12px 0; line-height: 1.1; }
+    .bundle-box p { color: #CBD5E1; font-size: 15.5px; margin-bottom: 18px; }
+    .bundle-pills { display: flex; flex-wrap: wrap; gap: 9px; }
+    .bundle-pills span {
+      font-family: var(--mono); font-size: 12px; padding: 6px 11px; border-radius: 8px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #E2E8F0;
+    }
+    .bundle-checkout {
+      background: rgba(6, 8, 14, 0.78); border: 1px solid rgba(52,211,153,0.32);
+      border-radius: 18px; padding: 26px; text-align: center;
+    }
+    .old-price { font-size: 18px; color: var(--text-dim); text-decoration: line-through; font-weight: 700; }
+    .new-price { font-size: 54px; font-weight: 900; letter-spacing: -0.04em; color: #FFF; line-height: 1.02; margin: 4px 0; }
+    .save-badge {
+      display: inline-block; font-size: 12px; font-weight: 800; color: #052E16; background: var(--green);
+      padding: 4px 10px; border-radius: 999px; margin-bottom: 18px;
+    }
+    .bundle-checkout .btn { width: 100%; margin-bottom: 10px; }
+    .checkout-note { font-size: 12px; color: var(--text-dim); }
+
+    /* Comparison Table */
+    .table-wrap {
+      margin-top: 28px; background: var(--bg-elev); border: 1px solid var(--border);
+      border-radius: 18px; overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; font-size: 14px; }
+    th, td { padding: 15px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); background: rgba(255,255,255,0.02); }
+    tr:last-child td { border-bottom: none; }
+    td.yes { color: var(--green); font-weight: 700; }
+    td.no { color: var(--text-dim); }
+    th.hi-col, td.hi-col { background: rgba(16,185,129,0.06); }
+
+    /* Engineering Craftsmanship Banner */
+    .craft-card {
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 22px;
+      padding: 28px 30px; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 28px; align-items: center;
+    }
+    .craft-card img { border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+    .craft-card h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin: 10px 0 12px; }
+    .craft-card p { font-size: 15px; color: var(--text-muted); margin-bottom: 16px; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 860px; }
+    details.faq {
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px;
+    }
+    details.faq[open] { border-color: rgba(52,211,153,0.35); }
+    details.faq summary {
+      font-weight: 700; font-size: 15.5px; cursor: pointer; list-style: none;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    details.faq summary::-webkit-details-marker { display: none; }
+    details.faq summary::after { content: "+"; font-size: 20px; color: var(--green); font-weight: 700; }
+    details.faq[open] summary::after { content: "−"; }
+    details.faq p { margin-top: 12px; font-size: 14.5px; color: var(--text-muted); }
+
+    /* Footer */
     footer {
-      border-top: 1px solid var(--border); padding: 36px 0; margin-top: 48px;
-      color: var(--muted); font-size: 0.88rem; display: flex; flex-wrap: wrap;
-      justify-content: space-between; gap: 16px;
+      margin-top: 40px; border-top: 1px solid var(--border); padding: 34px 0 46px;
+      color: var(--text-dim); font-size: 13.5px;
+    }
+    .foot-in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .foot-links a:hover { color: #FFF; }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero-grid, .suite-card, .bundle-box, .craft-card { grid-template-columns: 1fr; }
+      .suite-visual { border-right: none; border-bottom: 1px solid var(--border); }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .wrap { padding: 0 16px; }
+      .nav-in { padding: 12px 16px; }
+      .brand-tag, .nav-actions .btn-ghost { display: none; }
+      .nav-actions .btn-primary { padding: 9px 13px; font-size: 13px; }
+      .trust-pill { border-radius: 12px; font-size: 11.5px; line-height: 1.35; }
+      .hero { padding: 28px 0 24px; }
+      .hero h1 { font-size: 31px; }
+      .sim-title { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .sim-btns { grid-template-columns: 1fr; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .suite-body, .bundle-box, .craft-card { padding: 22px 16px; }
+      .hero-ctas .btn, .suite-actions .btn { width: 100%; white-space: normal; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand"><span class="brand-dot"></span> Daniel Lopes · AI DevTools</div>
-      <div class="nav-links">
+
+  <header class="nav">
+    <div class="nav-in">
+      <a href="#" class="brand">
+        <img src="assets/avatar.jpg" alt="Daniel Lopes" />
+        <span>Daniel Lopes</span>
+        <span class="brand-tag">AI DevTools</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#demo">Live Simulator</a>
+        <a href="#suites">3 Production Suites</a>
         <a href="#bundle">Bundle ($79)</a>
-        <a href="#suites">3 Pro Suites</a>
-        <a href="#cli-demo">Live CLI</a>
-        <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub (MIT)</a>
-        <a href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener" class="btn btn-gold" style="padding:8px 14px;font-size:0.84rem;">Get Bundle ($79)</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Get Stack · $79</a>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="pill">Zero npm install · Pure Node.js 18+/24+ · 100% Live QA Verified</div>
-      <h1>Production-Hardened <span class="grad">MCP Servers, n8n Vaults &amp; AI Coding Guardrails</span></h1>
-      <p>Stop shipping brittle AI agent tooling bloated with 150+ npm dependencies. Try any of our 3 open-source MIT starter kits free on GitHub, or deploy the complete commercial stack in 60 seconds.</p>
-      <div class="hero-cta">
-        <a class="btn btn-gold" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Get All 3 Pro Suites — $79 (Save $38)</a>
-        <a class="btn btn-outline" href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">Explore Free MIT Kits on GitHub →</a>
-      </div>
-      <div class="stats">
-        <div class="stat"><strong>15</strong><span>Zero-Dep MCP Servers</span></div>
-        <div class="stat"><strong>25</strong><span>Official-Node n8n Workflows</span></div>
-        <div class="stat"><strong>10</strong><span>Security Hooks &amp; OWASP CLIs</span></div>
-        <div class="stat"><strong>0</strong><span>External npm Dependencies</span></div>
+  <main>
+    <!-- HERO + LIVE INTERACTIVE SIMULATOR -->
+    <section class="hero" id="demo">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <a class="trust-pill" href="https://tensorblock.co/mcp/servers/github-danlopes18-ctrl-mcp-starter-suite-lite-b0cabba8" target="_blank" rel="noopener">
+              <span class="pulse-dot"></span>
+              Listed in TensorBlock/awesome-mcp-servers · Zero npm Deps ↗
+            </a>
+            <h1>Zero-Dependency <em>AI Engineering</em> Kits Built for Production.</h1>
+            <p class="hero-sub">
+              Hardened native Node.js MCP servers, deterministic Claude Code <span class="mono">PreToolUse</span> security hooks, and standard-node n8n automation stacks. Audit the free MIT code first — upgrade to Pro when you ship.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary btn-lg" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">
+                Get Complete Stack — $79 (Save $38)
+              </a>
+              <a class="btn btn-secondary btn-lg" href="#suites">
+                Try Free MIT Kits ↓
+              </a>
+            </div>
+            <div class="hero-meta">
+              <span><strong>0</strong> external npm packages</span>
+              <span><strong>&lt;15ms</strong> hook latency</span>
+              <span><strong>100%</strong> live QA verified</span>
+              <span><strong>Commercial</strong> agency license</span>
+            </div>
+          </div>
+
+          <!-- Interactive Attack/Defense Terminal -->
+          <div class="sim-shell" aria-label="Live AI Security Simulator">
+            <div class="sim-bar">
+              <div class="sim-dots">
+                <i style="background:#EF4444"></i><i style="background:#F59E0B"></i><i style="background:#10B981"></i>
+              </div>
+              <div class="sim-title mono">live-guardrails-sim · PreToolUse + MCP</div>
+              <div class="sim-armed mono">● ARMED</div>
+            </div>
+            <div class="sim-controls">
+              <div class="sim-label">Click an attack to test our native Node.js guardrails live:</div>
+              <div class="sim-btns">
+                <button class="atk-btn active" type="button" data-atk="rmrf"><span>rm -rf /</span><span class="run-tag">RUN</span></button>
+                <button class="atk-btn" type="button" data-atk="aws"><span>AWS Key Leak</span><span class="run-tag">RUN</span></button>
+                <button class="atk-btn" type="button" data-atk="symlink"><span>../../.env Symlink</span><span class="run-tag">RUN</span></button>
+                <button class="atk-btn" type="button" data-atk="sqli"><span>SQL DROP TABLE</span><span class="run-tag">RUN</span></button>
+              </div>
+            </div>
+            <div class="sim-screen" id="sim-screen"></div>
+            <div class="sim-foot mono">
+              <span>Intercepts tested: <strong id="sim-count">1</strong></span>
+              <span>Deps installed: <strong>0 npm packages</strong></span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="bundle" class="section">
-      <div class="bundle-card">
-        <div>
-          <span class="tag" style="background:rgba(245,158,11,0.2);color:#fcd34d;">Best Value · Complete Stack</span>
-          <h2 class="section-title" style="margin-top:4px;">Complete AI Engineering Stack Bundle</h2>
-          <p style="color:var(--muted);margin-bottom:10px;">Every single n8n workflow, zero-dependency MCP server, PreToolUse security hook, OWASP PR auditor, architecture rulebook, and slash skill in one commercial license.</p>
-          <div class="bundle-price">
-            <span class="now">$79</span>
-            <span class="was">$117</span>
-            <span class="save">SAVE $38 (32% OFF)</span>
+    <!-- AUTHORITY PROOF STRIP -->
+    <section class="proof-strip">
+      <div class="wrap">
+        <div class="proof-grid">
+          <div class="proof-tile">
+            <strong>TensorBlock Indexed</strong>
+            <span>Merged into <span class="mono">awesome-mcp-servers</span> (1,100+ stars)</span>
+            <a href="https://github.com/TensorBlock/awesome-mcp-servers/pull/6605" target="_blank" rel="noopener">View merged PR #6605 →</a>
           </div>
-          <a class="btn btn-gold" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Buy Complete Bundle on Gumroad →</a>
-        </div>
-        <div>
-          <ul class="check-list">
-            <li><strong>AI Agency &amp; DevOps Automation Vault ($29):</strong> 25 official-node n8n workflows + 3 MCP servers + 4 rulebooks</li>
-            <li><strong>Production MCP Server Suite ($39):</strong> 12 hardened single-file Node.js MCP servers + Universal Inspector CLI</li>
-            <li><strong>AI Coding Guardrails &amp; Engineering OS ($49):</strong> 10 executable security hooks/CLIs + 8 rulebooks + 12 slash skills + installer</li>
-            <li><strong>Full Commercial &amp; Agency License</strong> across unlimited personal, team, and client projects</li>
-          </ul>
+          <div class="proof-tile">
+            <strong>0 npm Dependencies</strong>
+            <span>Pure native Node.js 18+/22 — audit every single file in 3 minutes</span>
+            <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">Inspect MIT repos →</a>
+          </div>
+          <div class="proof-tile">
+            <strong>100% Live QA Pass</strong>
+            <span>23/23 hook tests · 12/12 MCP JSON-RPC tests · 25/25 n8n JSONs</span>
+            <a href="#suites">See what's inside →</a>
+          </div>
+          <div class="proof-tile">
+            <strong>Instant Commercial ZIP</strong>
+            <span>Use on unlimited personal &amp; client agency repos — zero subscriptions</span>
+            <a href="#bundle">Save $38 with Bundle →</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="suites" class="section">
-      <h2 class="section-title">Individual Production Suites (+ Free MIT Starters)</h2>
-      <p class="section-sub">Test the free MIT starter repo on GitHub first — upgrade to the complete commercial ZIP whenever you need the full suite.</p>
-      <div class="grid-3">
-        <article class="card">
-          <div>
-            <span class="tag tag-emerald">Claude Code · Cursor · Antigravity</span>
-            <h3>AI Coding Guardrails &amp; Engineering OS</h3>
-            <p>10 executable Node.js PreToolUse/PostToolUse hooks &amp; CLIs (block <code>rm -rf /</code>, force-push, <code>.env</code>/secret leaks, OWASP PR auditor, context packer, prompt evals, USD budget cap) + 8 rulebooks + 12 skills.</p>
-          </div>
-          <div>
-            <div class="card-price">$49 <span style="font-size:0.85rem;color:var(--muted);font-weight:500;">· 39 files ZIP</span></div>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/ai-coding-guardrails-os" target="_blank" rel="noopener">Get Pro OS ($49) →</a>
-              <a class="btn btn-outline" href="https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite" target="_blank" rel="noopener">Free MIT Lite on GitHub</a>
-            </div>
-          </div>
-        </article>
+    <!-- 3 FLAGSHIP SUITES -->
+    <section class="sec" id="suites">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="eyebrow">3 Production Developer Suites</div>
+          <h2>Inspect the Free MIT Code. Upgrade Only When It Earns Its Keep.</h2>
+          <p>Every Pro suite comes with a free, open-source MIT Lite edition on GitHub so you can verify code quality, security posture, and zero-dependency execution on your own machine first.</p>
+        </div>
 
-        <article class="card">
-          <div>
-            <span class="tag tag-violet">Model Context Protocol (MCP)</span>
-            <h3>Production MCP Server Suite</h3>
-            <p>12 security-hardened, zero-dependency Node.js MCP servers: Read-only SQLite (Node 24), Symlink-Jailed Filesystem, Read-only Git, GitHub Ops, SSRF-Shielded HTTP Tester, HMAC Webhooks, Log Detective, Secret Auditor &amp; Inspector CLI.</p>
-          </div>
-          <div>
-            <div class="card-price">$39 <span style="font-size:0.85rem;color:var(--muted);font-weight:500;">· 33 files ZIP</span></div>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/production-mcp-suite" target="_blank" rel="noopener">Get 12-Server Suite ($39) →</a>
-              <a class="btn btn-outline" href="https://github.com/danlopes18-ctrl/mcp-starter-suite-lite" target="_blank" rel="noopener">Free MIT Lite on GitHub</a>
+        <div class="suites-stack">
+          <!-- Suite 1: Guardrails OS ($49) -->
+          <article class="suite-card featured">
+            <div class="suite-visual">
+              <img src="assets/card_guardrails.png" alt="AI Coding Guardrails PreToolUse hooks blocking 4 real attacks in under 15ms" loading="lazy" />
             </div>
-          </div>
-        </article>
+            <div class="suite-body">
+              <div>
+                <div class="suite-top">
+                  <span class="chip">Most Popular · Claude Code &amp; Cursor</span>
+                  <div class="price-tag">$49 <small>one-time</small></div>
+                </div>
+                <h3>AI Coding Guardrails &amp; Engineering OS</h3>
+                <p class="suite-desc">Deterministic <span class="mono">PreToolUse</span> / <span class="mono">PostToolUse</span> runtime hooks and security CLIs that stop AI agents before they wipe repos, push to <span class="mono">main</span>, or leak API keys.</p>
+                <ul class="feat-list">
+                  <li><strong>10 executable Node.js hooks &amp; CLIs:</strong> shell guard, 11-pattern secret redactor, protected files jail, auto-verify gate, scope-creep detector, OWASP PR auditor, token context packer, prompt eval runner, USD cost tracker &amp; skill scaffolder.</li>
+                  <li><strong>8 senior rulebooks + 12 slash skills</strong> + 1-command installer &amp; GitHub Actions CI workflow.</li>
+                  <li><strong>23/23 automated security assertions</strong> verified live (zero npm install).</li>
+                </ul>
+              </div>
+              <div>
+                <div class="cli-box">
+                  <code>git clone https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite &amp;&amp; node ai-agent-guardrails-lite/install.mjs</code>
+                  <button class="copy-btn" type="button" data-copy="git clone https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite && node ai-agent-guardrails-lite/install.mjs">Copy</button>
+                </div>
+                <div class="suite-actions">
+                  <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/ai-coding-guardrails-os" target="_blank" rel="noopener">Buy Pro Suite — $49</a>
+                  <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite" target="_blank" rel="noopener">Free MIT Lite (GitHub)</a>
+                </div>
+              </div>
+            </div>
+          </article>
 
-        <article class="card">
-          <div>
-            <span class="tag tag-cyan">n8n + MCP Bridge</span>
-            <h3>AI Agency &amp; DevOps Automation Vault</h3>
-            <p>25 importable n8n JSON workflows built with 100% official standard nodes (Lead Gen, Support, DevOps, Content/SEO, Finance) with <code>OPENAI_BASE_URL</code> support (OpenAI/OpenRouter/Groq/Ollama) + 3 MCP servers.</p>
-          </div>
-          <div>
-            <div class="card-price">$29 <span style="font-size:0.85rem;color:var(--muted);font-weight:500;">· 44 files ZIP</span></div>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/ai-automation-vault" target="_blank" rel="noopener">Get Automation Vault ($29) →</a>
-              <a class="btn btn-outline" href="https://github.com/danlopes18-ctrl/ai-automation-vault-lite" target="_blank" rel="noopener">Free MIT Lite on GitHub</a>
+          <!-- Suite 2: Production MCP Server Suite ($39) -->
+          <article class="suite-card">
+            <div class="suite-visual">
+              <img src="assets/card_mcp_suite.png" alt="Comparison between typical fragile GitHub MCP server with 140 npm packages and zero-dependency hardened native Node.js MCP server" loading="lazy" />
             </div>
-          </div>
-        </article>
+            <div class="suite-body">
+              <div>
+                <div class="suite-top">
+                  <span class="chip cyan">Indexed on TensorBlock MCP</span>
+                  <div class="price-tag">$39 <small>one-time</small></div>
+                </div>
+                <h3>Production MCP Server Suite (12 Hardened Servers)</h3>
+                <p class="suite-desc">12 drop-in native Node.js <span class="mono">stdio</span> JSON-RPC 2.0 MCP servers engineered with defense-in-depth — plus a standalone MCP Inspector CLI.</p>
+                <ul class="feat-list">
+                  <li><strong>Security-first primitives:</strong> <span class="mono">fs.realpathSync()</span> symlink jail, DNS-verified SSRF shield blocking <span class="mono">169.254.169.254</span>, native read-only <span class="mono">node:sqlite</span>, and <span class="mono">crypto.timingSafeEqual()</span> HMAC webhooks.</li>
+                  <li><strong>12 ready servers:</strong> SQLite Analyst, Filesystem Sandbox, Git Intelligence, GitHub Ops, HTTP Tester, Webhook Dispatcher, CSV/JSON, Log Detective, Markdown Graph, Cron Planner, Env Auditor &amp; Prompt Memory.</li>
+                  <li><strong>18ms cold start</strong> — 12/12 servers verified live over JSON-RPC stdio.</li>
+                </ul>
+              </div>
+              <div>
+                <div class="cli-box">
+                  <code>git clone https://github.com/danlopes18-ctrl/mcp-starter-suite-lite &amp;&amp; node mcp-starter-suite-lite/tools/mcp-inspector-cli.mjs</code>
+                  <button class="copy-btn" type="button" data-copy="git clone https://github.com/danlopes18-ctrl/mcp-starter-suite-lite && node mcp-starter-suite-lite/tools/mcp-inspector-cli.mjs">Copy</button>
+                </div>
+                <div class="suite-actions">
+                  <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/production-mcp-suite" target="_blank" rel="noopener">Buy Pro Suite — $39</a>
+                  <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl/mcp-starter-suite-lite" target="_blank" rel="noopener">Free MIT Lite (GitHub)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Suite 3: AI Agency & DevOps Automation Vault ($29) -->
+          <article class="suite-card">
+            <div class="suite-visual">
+              <img src="assets/card_n8n_vault.png" alt="25 production standard-node n8n workflows and 3 native MCP servers" loading="lazy" />
+            </div>
+            <div class="suite-body">
+              <div>
+                <div class="suite-top">
+                  <span class="chip amber">n8n · Agencies &amp; DevOps</span>
+                  <div class="price-tag">$29 <small>one-time</small></div>
+                </div>
+                <h3>AI Agency &amp; DevOps Automation Vault</h3>
+                <p class="suite-desc">25 ready-to-import n8n workflows using 100% official standard nodes (no fragile community plugins) paired with 3 native MCP servers and 4 senior rulebooks.</p>
+                <ul class="feat-list">
+                  <li><strong>5 complete verticals (25 JSONs):</strong> Lead Gen &amp; Sales, Support &amp; Ops, DevOps &amp; GitHub, Content &amp; SEO, and Finance &amp; Executive reporting.</li>
+                  <li><strong>Provider-agnostic:</strong> pre-wired for <span class="mono">OPENAI_BASE_URL</span> (OpenAI, OpenRouter, Groq, or local Ollama) with sticky-note setup guides inside every workflow.</li>
+                  <li><strong>43 JS Code nodes</strong> syntax-validated + 3 MCP bridges included.</li>
+                </ul>
+              </div>
+              <div>
+                <div class="cli-box">
+                  <code>git clone https://github.com/danlopes18-ctrl/ai-automation-vault-lite</code>
+                  <button class="copy-btn" type="button" data-copy="git clone https://github.com/danlopes18-ctrl/ai-automation-vault-lite">Copy</button>
+                </div>
+                <div class="suite-actions">
+                  <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/ai-automation-vault" target="_blank" rel="noopener">Buy Pro Vault — $29</a>
+                  <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl/ai-automation-vault-lite" target="_blank" rel="noopener">Free MIT Lite (GitHub)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section id="cli-demo" class="section">
-      <h2 class="section-title">Try Free in 30 Seconds (Zero Dependencies)</h2>
-      <p class="section-sub">Clone any MIT starter kit and run straight on Node.js 18+ with zero build step.</p>
-      <div class="terminal">
-        <div class="term-tabs">
-          <button class="term-tab active" onclick="showTab(0, this)">AI Guardrails Hook &amp; OWASP CLI</button>
-          <button class="term-tab" onclick="showTab(1, this)">MCP Inspector &amp; Servers</button>
-          <button class="term-tab" onclick="showTab(2, this)">n8n MCP Bridge</button>
+    <!-- COMPLETE STACK BUNDLE SPOTLIGHT + COMPARISON -->
+    <section class="sec" id="bundle">
+      <div class="wrap">
+        <div class="bundle-box">
+          <div>
+            <span class="chip">Best Value · All 3 Production Suites</span>
+            <h2>Complete AI Engineering Stack Bundle</h2>
+            <p>Get every single hardened MCP server, security hook, OWASP PR scanner, n8n workflow, senior rulebook, and slash skill in one unified commercial package — save $38 compared to buying individually.</p>
+            <div class="bundle-pills">
+              <span>10 Security Hooks &amp; CLIs</span>
+              <span>15 Native MCP Servers</span>
+              <span>25 n8n Workflows</span>
+              <span>12 Senior Rulebooks</span>
+              <span>12 Slash Skills</span>
+              <span>MCP Inspector CLI</span>
+            </div>
+          </div>
+          <div class="bundle-checkout">
+            <div class="old-price">$117 value</div>
+            <div class="new-price">$79</div>
+            <div class="save-badge">SAVE $38 (32% OFF)</div>
+            <a class="btn btn-primary btn-lg" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">
+              Get Complete Stack →
+            </a>
+            <div class="checkout-note">Instant ZIP download via Gumroad · One-time payment · Commercial license</div>
+          </div>
         </div>
-        <pre id="term-code">git clone https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite.git
-cd ai-agent-guardrails-lite
 
-# Block destructive commands in Claude Code PreToolUse (exits 2 -> BLOCKED)
-node hooks/01-hook-block-dangerous-shell.mjs --cmd "git push --force origin main"
+        <div class="table-wrap" id="compare">
+          <table>
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Free MIT Lite Kits</th>
+                <th>Individual Pro Suite</th>
+                <th class="hi-col">Complete Stack ($79)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Zero npm dependencies (pure Node.js)</td>
+                <td class="yes">✓ Yes</td>
+                <td class="yes">✓ Yes</td>
+                <td class="yes hi-col">✓ Yes</td>
+              </tr>
+              <tr>
+                <td>PreToolUse Security Hooks &amp; Cost/Eval CLIs</td>
+                <td>3 starter hooks</td>
+                <td>10 hooks + 8 rulebooks + 12 skills ($49)</td>
+                <td class="yes hi-col">✓ Full Guardrails OS included</td>
+              </tr>
+              <tr>
+                <td>Hardened Native MCP Servers + Inspector CLI</td>
+                <td>3 starter servers</td>
+                <td>12 hardened servers ($39)</td>
+                <td class="yes hi-col">✓ All 15 servers included</td>
+              </tr>
+              <tr>
+                <td>Production Standard-Node n8n Workflows</td>
+                <td>5 starter workflows</td>
+                <td>25 workflows + 3 MCPs ($29)</td>
+                <td class="yes hi-col">✓ All 25 workflows included</td>
+              </tr>
+              <tr>
+                <td>Commercial Client / Agency Use</td>
+                <td class="yes">✓ MIT</td>
+                <td class="yes">✓ Commercial</td>
+                <td class="yes hi-col">✓ Unlimited Commercial</td>
+              </tr>
+              <tr>
+                <td>Total Cost</td>
+                <td><strong>$0</strong></td>
+                <td>$29 – $49 each ($117 total)</td>
+                <td class="yes hi-col"><strong>$79 one-time (Save $38)</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-# Run 14-rule OWASP + Secret PR Security Audit in Markdown
-node clis/06-cli-pr-security-auditor.mjs --dir ./src --markdown</pre>
+    <!-- REAL ENGINEERING PROOF -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="craft-card">
+          <div>
+            <div class="eyebrow">Engineering DNA</div>
+            <h3>Built by an Open-Source Performance &amp; Security Engineer</h3>
+            <p>We don't ship prompt fluff or bloated wrapper templates. Every kit in this storefront follows the same discipline we apply to large-scale React/TypeScript production codebases: benchmark first, eliminate unnecessary dependencies, and enforce security deterministically.</p>
+            <div class="suite-actions">
+              <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub Profile</a>
+              <a class="btn btn-ghost" href="https://x.com/FelipeDani9353" target="_blank" rel="noopener">Follow on X (@FelipeDani9353)</a>
+            </div>
+          </div>
+          <div>
+            <img src="assets/card_ts_perf.png" alt="Real 50,000-row React TypeScript performance benchmark showing 166.3ms reduced to 14.1ms" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="sec" id="faq">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="eyebrow">Questions Answered</div>
+          <h2>Straightforward Answers Before You Buy</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq" open>
+            <summary>Do I really need zero npm packages to run the MCP servers and security hooks?</summary>
+            <p>Yes. Every MCP server and guardrail hook runs directly on native Node.js 18+/22 standard modules (<span class="mono">node:fs</span>, <span class="mono">node:crypto</span>, <span class="mono">node:dns</span>, <span class="mono">node:sqlite</span>). There is no <span class="mono">npm install</span>, no lockfile bloat, and you can inspect every line of code in minutes.</p>
+          </details>
+          <details class="faq">
+            <summary>Which AI coding tools are supported out of the box?</summary>
+            <p>Claude Code (<span class="mono">.claude/settings.json</span> hooks + MCP), Cursor (<span class="mono">.cursor/rules/*.mdc</span> + MCP), Windsurf, Antigravity, and any MCP-compatible <span class="mono">stdio</span> client. The n8n workflows run on any standard self-hosted or cloud n8n instance.</p>
+          </details>
+          <details class="faq">
+            <summary>Can I try the code before paying anything?</summary>
+            <p>Yes — all 3 products have live, MIT-licensed Lite editions on GitHub (<span class="mono">ai-agent-guardrails-lite</span>, <span class="mono">mcp-starter-suite-lite</span>, and <span class="mono">ai-automation-vault-lite</span>). Clone them, run the tests locally, and only upgrade to Pro when you want the full libraries.</p>
+          </details>
+          <details class="faq">
+            <summary>Can I use the Pro suites inside client or agency projects?</summary>
+            <p>Yes. Every Gumroad Pro suite and the $79 Complete Stack Bundle includes a commercial license covering unlimited personal, team, and client agency deployments (just don't resell the raw template pack itself as a competing bundle).</p>
+          </details>
+          <details class="faq">
+            <summary>How is the product delivered after checkout?</summary>
+            <p>Immediately after Gumroad checkout, you receive a verified ZIP archive containing all source files, installers, workflow JSONs, rulebooks, and quickstart guides — one-time payment with no recurring subscription.</p>
+          </details>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="container">
-    <div>© 2026 Daniel Lopes · Full-Stack &amp; AI Systems Engineer</div>
-    <div style="display:flex;gap:18px;flex-wrap:wrap;">
-      <a href="https://danlopes3.gumroad.com" target="_blank" rel="noopener">Gumroad Store</a>
-      <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://x.com/FelipeDani9353" target="_blank" rel="noopener">X / Twitter</a>
-      <a href="https://www.upwork.com/freelancers/~017cd1009178a92a66" target="_blank" rel="noopener">Upwork</a>
+  <footer>
+    <div class="wrap foot-in">
+      <div>© 2026 Daniel Lopes · AI DevTools — Zero-Dependency Engineering Kits</div>
+      <div class="foot-links">
+        <a href="https://danlopes3.gumroad.com" target="_blank" rel="noopener">Gumroad Storefront</a>
+        <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://tensorblock.co/mcp/servers/github-danlopes18-ctrl-mcp-starter-suite-lite-b0cabba8" target="_blank" rel="noopener">TensorBlock MCP Index</a>
+        <a href="https://x.com/FelipeDani9353" target="_blank" rel="noopener">X / Twitter</a>
+      </div>
     </div>
   </footer>
 
   <script>
-    const SNIPPETS = [
-`git clone https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite.git
-cd ai-agent-guardrails-lite
+    const SCENARIOS = {
+      rmrf: {
+        cmd: 'claude-agent --auto "cleanup temp build dirs"',
+        hook: '01-hook-block-dangerous-shell.mjs',
+        badge: 'BLOCKED · EXIT 2 · 4ms',
+        detail: 'Payload: <span class="bad">rm -rf / --no-preserve-root</span>',
+        rule: 'Rule: <span class="ok">destructive-fs-wipe</span> · Shell execution prevented before spawn.'
+      },
+      aws: {
+        cmd: 'claude-agent --write src/config.ts',
+        hook: '02-hook-secret-leak-guard.mjs',
+        badge: 'BLOCKED + REDACTED · 6ms',
+        detail: 'Detected: <span class="bad">AKIA••••••••MPLE</span> (never written to disk or stdout)',
+        rule: 'Rule: <span class="ok">aws-access-key-id</span> · 11 secret families guarded deterministically.'
+      },
+      symlink: {
+        cmd: 'mcp-fs-sandbox -> read_file("./docs/link-to-env")',
+        hook: 'mcp-filesystem-sandbox.mjs',
+        badge: 'DENIED · SYMLINK JAIL · 3ms',
+        detail: 'Resolved realpath: <span class="bad">/workspace/../../.env.production</span>',
+        rule: 'Rule: <span class="ok">realpath-boundary + dotenv-denylist</span> · Zero path traversal.'
+      },
+      sqli: {
+        cmd: 'mcp-sqlite-analyst -> query("DROP TABLE invoices;")',
+        hook: 'mcp-sqlite-analyst.mjs',
+        badge: 'DENIED · READ-ONLY · 2ms',
+        detail: 'Statement: <span class="bad">DROP TABLE invoices;</span> rejected by AST + SQLite handle',
+        rule: 'Rule: <span class="ok">node:sqlite readOnly:true + PRAGMA query_only=ON</span>.'
+      }
+    };
 
-# Block destructive commands in Claude Code PreToolUse (exits 2 -> BLOCKED)
-node hooks/01-hook-block-dangerous-shell.mjs --cmd "git push --force origin main"
+    const screen = document.getElementById('sim-screen');
+    const countEl = document.getElementById('sim-count');
+    let count = 0;
 
-# Run 14-rule OWASP + Secret PR Security Audit in Markdown
-node clis/06-cli-pr-security-auditor.mjs --dir ./src --markdown`,
-
-`git clone https://github.com/danlopes18-ctrl/mcp-starter-suite-lite.git
-cd mcp-starter-suite-lite
-
-# Inspect tools exposed by any stdio MCP server — zero npm install
-node tools/mcp-inspector-cli.mjs servers/mcp-git-intelligence/server.mjs list
-
-# Audit a repo for secret leaks & .gitignore hygiene (always masked)
-node tools/mcp-inspector-cli.mjs servers/mcp-env-security-auditor/server.mjs call check_gitignore_hygiene '{}'`,
-
-`git clone https://github.com/danlopes18-ctrl/ai-automation-vault-lite.git
-cd ai-automation-vault-lite
-
-# Import any of the 5 official-node JSON workflows into n8n
-# Connect Claude Code / Cursor directly to your n8n webhooks:
-node mcp-webhook-runner/server.mjs`
-    ];
-    function showTab(idx, btn) {
-      document.getElementById("term-code").textContent = SNIPPETS[idx];
-      document.querySelectorAll(".term-tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+    function renderScenario(key) {
+      const s = SCENARIOS[key];
+      if (!s) return;
+      count += 1;
+      countEl.textContent = String(count);
+      document.querySelectorAll('.atk-btn').forEach(b => b.classList.toggle('active', b.dataset.atk === key));
+      screen.innerHTML = `
+        <div class="term-cmd"><span class="p">$</span> ${s.cmd}</div>
+        <div class="term-block">
+          <div class="term-block-head">
+            <span class="term-hook">${s.hook}</span>
+            <span class="term-badge">${s.badge}</span>
+          </div>
+          <div class="term-line">${s.detail}</div>
+          <div class="term-line" style="margin-top:5px">${s.rule}</div>
+        </div>
+        <div class="term-line" style="color:#64748B">✓ Workspace untouched · exit code 2 returned to AI agent runtime</div>
+      `;
     }
+
+    document.querySelectorAll('.atk-btn').forEach(btn => {
+      btn.addEventListener('click', () => renderScenario(btn.dataset.atk));
+    });
+    renderScenario('rmrf');
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy);
+          const orig = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = orig; }, 1600);
+        } catch (_) {}
+      });
+    });
   </script>
 </body>
 </html>
