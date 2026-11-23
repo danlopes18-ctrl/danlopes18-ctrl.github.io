@@ -14,4 +14,6 @@
 - [AI Agency & DevOps Automation Vault ($29)](https://danlopes3.gumroad.com/l/ai-automation-vault)
 
 ## Apify Store Actors (Pay-Per-Event + MCP Ready)
-- [Website Tech Stack, Security & AI-Readiness (llms.txt) Auditor](https://apify.com/danlopes18/apify-site-intel-ai-auditor): Zero-browser B2B lead enrichment, security header grader & AI crawler readiness auditor.
+- [Website Tech Stack, Security & AI-Readiness (llms.txt) Auditor](https://apify.com/danlopes18/apify-site-intel-ai-auditor): Zero-browser B2B lead enrichment, security header grader & AI crawler readiness auditor ($5 / 1,000 domains).
+- [Fast LLM-Ready Markdown & Sitemap Crawler (RAG / MCP)](https://apify.com/danlopes18/apify-llm-markdown-crawler): Ultra-fast HTML-to-Markdown & sitemap crawler with token counting for RAG, Claude, Cursor & n8n ($3 / 1,000 pages).
+- [GitHub Organization & Open-Source Repo Intelligence Extractor](https://apify.com/danlopes18/apify-github-devtool-org-intel): B2B devtool lead enrichment, velocity scoring & AI/MCP adoption signals ($4 / 1,000 profiles/repos).
