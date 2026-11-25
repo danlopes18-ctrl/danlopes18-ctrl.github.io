@@ -20,6 +20,15 @@
 - [RSS, Atom & Blog News Intelligence Aggregator (AI / MCP)](https://apify.com/danlopes18/apify-rss-news-ai-monitor): Zero-browser RSS/Atom/JSON Feed aggregator with auto-discovery, keyword filtering & clean LLM summaries ($2 / 1,000 articles).
 - [B2B Company Contact, Email, Phone & Social Profile Extractor](https://apify.com/danlopes18/apify-b2b-contact-social-extractor): Multi-page zero-browser crawler extracting verified public emails (role vs personal), phones, WhatsApp/booking links & social profiles ($6 / 1,000 companies).
 
+## Live Cloudflare Edge REST API (API.market)
+- [AI Web Intelligence, RAG Markdown & B2B Enrichment API](https://api.market/store/danlopes18/edge-web-intel-api): 5 sub-second zero-browser REST endpoints (`/v1/audit`, `/v1/markdown`, `/v1/github-org`, `/v1/rss`, `/v1/b2b-contacts`) with built-in SSRF shield and OpenAPI 3.1 spec (Free tier + $19–$149/mo). Source: https://github.com/danlopes18-ctrl/edge-web-intel-api
+
+## Fixed-Price Engineering Services (Upwork Project Catalog & Fiverr)
+- Custom n8n AI Workflows & Webhooks ($95–$490): [Upwork](https://www.upwork.com/services/product/2125537911403602831) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-production-n8n-ai-automation-workflow-with-apis-and-webhooks)
+- Hardened TypeScript MCP Servers ($125–$545): [Upwork](https://www.upwork.com/services/product/2125550819664876751) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-secure-typescript-mcp-server-for-claude-cursor-and-ai-agents)
+- Fast Web Scrapers, Apify Actors & Cloudflare Edge APIs ($95–$445): [Upwork](https://www.upwork.com/services/product/2125554456380990351) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-fast-web-scraper-b2b-data-extractor-or-cloudflare-edge-api)
+
 ## Technical Engineering Guides
+- [Stop Babysitting AI Agents: Production Harness Loops, Default-FAIL Evaluators & Zero-Browser Edge APIs](https://danlopes18-ctrl.github.io/guides/harness-engineering-loops-evaluators-edge-api.html): Architecture guide covering structured JSON state, isolated read-only evaluator loops, deterministic `PreToolUse` hooks, and sub-second Cloudflare Edge APIs.
 - [4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies](https://danlopes18-ctrl.github.io/guides/hardening-nodejs-mcp-servers.html): Symlink jails (`fs.realpathSync`), DNS-verified SSRF protection (`169.254.169.254`), read-only `node:sqlite`, and `crypto.timingSafeEqual` HMAC verification.
 - [Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Apify Actors](https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html): Architecture and benchmarks for 5 zero-browser Node.js 22 Apify Actors for RAG, llms.txt audits, GitHub velocity, RSS monitoring, and B2B lead enrichment.

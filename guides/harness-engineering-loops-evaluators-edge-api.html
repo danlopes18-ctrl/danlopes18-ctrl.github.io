@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stop Babysitting AI Agents: Production Harness Loops, Default-FAIL Evaluators &amp; Zero-Browser Edge APIs · Daniel Lopes</title>
+  <meta name="description" content="Practical architecture guide for production AI agent harnesses: JSON state outside chat, isolated Default-FAIL evaluators, PreToolUse security hooks, and sub-second Cloudflare Edge Web Intelligence APIs." />
+  <meta name="theme-color" content="#06080E" />
+  <link rel="canonical" href="https://danlopes18-ctrl.github.io/guides/harness-engineering-loops-evaluators-edge-api.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://danlopes18-ctrl.github.io/guides/harness-engineering-loops-evaluators-edge-api.html" />
+  <meta property="og:title" content="Stop Babysitting AI Agents: Harness Loops, Default-FAIL Evaluators &amp; Zero-Browser Edge APIs" />
+  <meta property="og:description" content="Why model intelligence is rarely the bottleneck — and how JSON state, read-only evaluator loops, PreToolUse hooks, and sub-second Edge APIs turn agents into reliable production workers." />
+  <meta property="og:image" content="https://danlopes18-ctrl.github.io/assets/card_guardrails.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@FelipeDani9353" />
+  <meta name="twitter:title" content="Production Harness Engineering: Loops, Default-FAIL Evaluators &amp; Edge APIs" />
+  <meta name="twitter:description" content="Move from brittle single prompts to verified autonomous loops with zero-dependency guardrails and sub-second Cloudflare Edge web intelligence." />
+  <meta name="twitter:image" content="https://danlopes18-ctrl.github.io/assets/card_guardrails.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Stop Babysitting AI Agents: Production Harness Loops, Default-FAIL Evaluators & Zero-Browser Edge APIs",
+    "description": "Engineering architecture for long-running AI agent harnesses combining JSON state, isolated read-only evaluators, PreToolUse security hooks, and zero-browser Cloudflare Workers REST APIs.",
+    "author": {
+      "@type": "Person",
+      "name": "Daniel Lopes",
+      "url": "https://danlopes18-ctrl.github.io/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Daniel Lopes"
+    },
+    "datePublished": "2026-11-25",
+    "dateModified": "2026-11-25",
+    "mainEntityOfPage": "https://danlopes18-ctrl.github.io/guides/harness-engineering-loops-evaluators-edge-api.html",
+    "image": "https://danlopes18-ctrl.github.io/assets/card_guardrails.png",
+    "keywords": ["harness engineering", "AI agent loops", "evaluator agent", "Claude Code hooks", "Cloudflare Workers API", "RAG Markdown API", "MCP server", "API.market"]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #06080E;
+      --bg-elev: #0C101A;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --green: #34D399;
+      --cyan: #38BDF8;
+      --amber: #FBBF24;
+      --red: #F87171;
+      --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    body {
+      background:
+        radial-gradient(900px 520px at 80% -5%, rgba(16, 185, 129, 0.13), transparent 62%),
+        radial-gradient(800px 480px at 10% 18%, rgba(56, 189, 248, 0.10), transparent 60%),
+        var(--bg);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mono { font-family: var(--mono); }
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(6, 8, 14, 0.84);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-in {
+      max-width: 960px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: #FFF; font-weight: 700; font-size: 15px; }
+    .brand:hover { text-decoration: none; }
+    .brand img { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); }
+    .nav-links { display: flex; gap: 18px; font-size: 13.5px; }
+    .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover { color: #FFF; text-decoration: none; }
+
+    .article-wrap { max-width: 840px; margin: 0 auto; padding: 48px 24px 84px; }
+    .crumb { font-size: 13px; color: var(--text-dim); margin-bottom: 18px; }
+    .crumb a { color: var(--text-muted); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 999px; margin-bottom: 16px;
+      background: rgba(251,191,36,0.12); color: var(--amber); border: 1px solid rgba(251,191,36,0.34);
+    }
+    h1 {
+      font-size: clamp(30px, 4.3vw, 43px); font-weight: 850; line-height: 1.12;
+      letter-spacing: -0.028em; margin-bottom: 18px; color: #FFF;
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--text-dim);
+      padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 30px;
+    }
+    .lead { font-size: 18px; color: #CBD5E1; margin-bottom: 26px; }
+    h2 {
+      font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: #FFF;
+      margin: 42px 0 14px; padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    h3 { font-size: 18px; font-weight: 700; color: #E2E8F0; margin: 24px 0 10px; }
+    p { margin-bottom: 16px; color: #CBD5E1; font-size: 16px; }
+    ul { margin: 0 0 18px 22px; color: #CBD5E1; }
+    li { margin-bottom: 8px; }
+    code {
+      font-family: var(--mono); font-size: 0.88em;
+      background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; color: #E2E8F0;
+    }
+    pre {
+      background: #0A0E17; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 18px 20px; overflow-x: auto; margin: 16px 0 22px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.6; color: #E2E8F0;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+
+    table {
+      width: 100%; border-collapse: collapse; margin: 20px 0 26px; font-size: 14.5px;
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    th, td { padding: 13px 15px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 700; }
+    .no { color: var(--red); font-weight: 700; }
+
+    .cta-box {
+      margin-top: 44px; padding: 28px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(56,189,248,0.12));
+      border: 1px solid rgba(52,211,153,0.36);
+    }
+    .cta-box h3 { margin-top: 0; font-size: 22px; color: #FFF; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-weight: 700; font-size: 14px; padding: 12px 18px; border-radius: 10px;
+      transition: transform .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, #10B981, #34D399); color: #04130D; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #FFF; border: 1px solid rgba(255,255,255,0.18); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
+      color: var(--text-dim); font-size: 13.5px;
+    }
+    @media (max-width: 640px) { .nav-links { display: none; } .article-wrap { padding: 30px 16px 60px; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="../index.html">
+        <img src="../assets/avatar.jpg" alt="Daniel Lopes" />
+        <span>Daniel Lopes · AI DevTools</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../index.html#edge-api">Live API</a>
+        <a href="../index.html#suites">Pro Suites</a>
+        <a href="../index.html#services">Services</a>
+        <a href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">API.market</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-wrap">
+    <div class="crumb"><a href="../index.html">Storefront</a> / <a href="../index.html#guides">Guides</a> / Harness Engineering &amp; Edge APIs</div>
+    <div class="eyebrow">Harness Engineering · Production Architecture</div>
+    <h1>Stop Babysitting AI Agents: Production Harness Loops, Default-FAIL Evaluators &amp; Zero-Browser Edge APIs</h1>
+    <div class="meta">
+      <span>By <strong>Daniel Lopes</strong></span>
+      <span>Published Nov 25, 2026</span>
+      <span>7 min read</span>
+      <span>Node.js 22 · Cloudflare Workers · MCP</span>
+    </div>
+
+    <p class="lead">Most teams still blame the foundation model when an autonomous workflow drifts, runs out of context, or ships a subtle regression. In production, model intelligence is rarely the bottleneck — the <strong>harness</strong> surrounding the model is.</p>
+
+    <h2>1. Why Single-Chat Agents Break After 15 Minutes</h2>
+    <p>When you give an AI agent a large task inside a single chat session, three predictable failure modes emerge:</p>
+    <ul>
+      <li><strong>Context amnesia on compaction:</strong> Once the conversation fills up, older requirements vanish and the agent wastes tokens re-discovering files it already inspected.</li>
+      <li><strong>Self-grading optimism:</strong> An agent that wrote a patch is biased toward declaring it "fixed" without proving every edge case against live behavior.</li>
+      <li><strong>Slow, fragile external tools:</strong> Spinning up headless Chromium or pulling 150-package scraping SDKs inside an agent loop burns memory, hits timeouts, and floods the context window with raw HTML noise.</li>
+    </ul>
+
+    <h2>2. The 4-Layer Production Harness Stack</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Failure It Prevents</th>
+          <th>Production Pattern</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. External JSON State</strong></td>
+          <td>Session amnesia &amp; markdown drift</td>
+          <td>Persist progress, verified URLs, and task gates in strict JSON + Git history outside the chat window</td>
+        </tr>
+        <tr>
+          <td><strong>2. Deterministic Guardrails</strong></td>
+          <td>Destructive commands &amp; leaked keys</td>
+          <td>Native Node.js <code>PreToolUse</code> hooks blocking <code>rm -rf</code>, <code>.env</code> reads, and SSRF in &lt;15ms</td>
+        </tr>
+        <tr>
+          <td><strong>3. Default-FAIL Evaluator</strong></td>
+          <td>Premature "looks good" victories</td>
+          <td>Separate read-only evaluator agent with fresh context that rejects output until live assertions pass</td>
+        </tr>
+        <tr>
+          <td><strong>4. Sub-Second Edge Tools</strong></td>
+          <td>Token bloat &amp; scraper timeouts</td>
+          <td>Zero-browser Cloudflare Workers REST endpoints returning clean Markdown, audits, and structured JSON</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Decouple Execution From Verification (Default-FAIL Loop)</h2>
+    <p>Instead of asking one agent to write, test, and approve its own work, split the loop into an <strong>Executor</strong> and a read-only <strong>Evaluator</strong> that starts with a clean context window and assumes every requirement is <code>FAIL</code> until backed by command output:</p>
+
+<pre><code>// Minimal harness contract: fail-closed live verification gate
+const assertions = [
+  { name: "auth-fail-closed", url: "/v1/audit?url=https://example.com", auth: false, expect: 401 },
+  { name: "ssrf-metadata-blocked", url: "/v1/audit?url=http://169.254.169.254/latest/meta-data/", auth: true, expect: 400 },
+  { name: "unreachable-never-200", url: "/v1/markdown?url=https://nonexistent.invalid", auth: true, expect: 502 },
+  { name: "clean-rag-markdown", url: "/v1/markdown?url=https://example.com", auth: true, expect: 200 }
+];
+// Any single mismatch exits non-zero and feeds the exact diff back into the generator loop.</code></pre>
+
+    <p>That exact fail-closed harness caught and fixed 5 real edge cases in our Cloudflare Worker API before it passed founder review on <a href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">API.market</a> with <strong>16/16 live edge assertions passing</strong>.</p>
+
+    <h2>4. Feed Your Agent Loop Clean Web Data in ~250ms</h2>
+    <p>Every kilobyte of raw navigation HTML dumped into an LLM context window degrades reasoning and inflates token bills. A production agent loop needs deterministic, structured endpoints with built-in SSRF protection:</p>
+
+<pre><code>curl -G "https://prod.api.market/v1/danlopes18/edge-web-intel-api/v1/markdown" \
+  --data-urlencode "url=https://cloudflare.com" \
+  -H "x-magicapi-key: YOUR_APIMARKET_KEY"</code></pre>
+
+    <p>Instead of managing Playwright containers or brittle regex scrapers, one sub-second call returns clean RAG-ready Markdown, heading maps, token estimates, security header grades (<code>/v1/audit</code>), GitHub org velocity (<code>/v1/github-org</code>), RSS feeds (<code>/v1/rss</code>), or multi-page verified B2B contacts (<code>/v1/b2b-contacts</code>).</p>
+
+    <h2>5. Keep Humans Only at High-Blast-Radius Gates</h2>
+    <p>Once your harness combines structured JSON state, deterministic <code>PreToolUse</code> hooks, clean Edge API tools, and a <code>Default-FAIL</code> evaluator loop, humans stop babysitting routine implementation steps and only review the final high-impact gate (publishing, billing, or external communication).</p>
+
+    <div class="cta-box">
+      <h3>Plug These Tools Straight Into Your Agent Harness</h3>
+      <p>Test our zero-browser Cloudflare Edge API free on API.market, audit our MIT zero-dependency security hooks &amp; MCP servers on GitHub, or hire us for a fixed-price custom build.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">Try Live API on API.market →</a>
+        <a class="btn btn-secondary" href="https://danlopes3.gumroad.com/l/complete-ai-engineering-stack" target="_blank" rel="noopener">Complete AI Stack ($79)</a>
+        <a class="btn btn-secondary" href="../index.html#services">Fixed-Price Services (Upwork/Fiverr)</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Daniel Lopes · <a href="../index.html">Storefront</a> · <a href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">API.market</a> · <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a> · <a href="https://x.com/FelipeDani9353" target="_blank" rel="noopener">X (@FelipeDani9353)</a>
+  </footer>
+</body>
+</html>
