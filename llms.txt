@@ -1,27 +1,30 @@
 # Daniel Lopes · AI DevTools — Zero-Dependency AI Engineering Kits
 
-> Production-hardened native Node.js MCP servers, Claude Code PreToolUse security hooks, standard-node n8n workflows, and Apify Store Actors. Zero external npm dependencies.
+> Production-hardened native Node.js MCP servers, Claude Code PreToolUse security hooks, Cloudflare Search for Agents Workers & WAF guardrails, standard-node n8n workflows, and Apify Store Actors. Zero external npm dependencies.
 
 ## Open-Source MIT Lite Kits (GitHub)
+- [Agent Search MCP (Cloudflare Search for Agents)](https://github.com/danlopes18-ctrl/agent-search-mcp): Zero-dependency Node.js MCP server implementing 4-Tier Cascade Discovery (`/.well-known/search`, RFC 10008 `HTTP QUERY`, `Accept: text/markdown`, `/llms.txt` + BM25) with DNS-verified SSRF Shield (Release v1.0.0).
 - [AI Coding Guardrails Lite](https://github.com/danlopes18-ctrl/ai-agent-guardrails-lite): 3 zero-dep PreToolUse security hooks + OWASP PR security auditor + 1-command installer for Claude Code, Cursor & Windsurf.
 - [MCP Starter Suite Lite](https://github.com/danlopes18-ctrl/mcp-starter-suite-lite): 3 hardened zero-dependency Node.js MCP servers (symlink-jailed FS, read-only Git, masked Secret Auditor) + standalone stdio Inspector CLI. Listed in TensorBlock/awesome-mcp-servers.
 - [AI Automation Vault Lite](https://github.com/danlopes18-ctrl/ai-automation-vault-lite): 5 standard-node n8n workflows + native Node.js MCP webhook runner bridge.
 
 ## Commercial Production Suites (Gumroad)
-- [Complete AI Engineering Stack Bundle ($79 — Save $38)](https://danlopes3.gumroad.com/l/complete-ai-engineering-stack): All 3 Pro suites combined (10 security hooks/CLIs, 15 native MCP servers, 25 n8n workflows, 12 senior rulebooks, 12 slash skills).
+- [Cloudflare Agent-Ready & Search Guardrails Kit ($29)](https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit): 2 Free-Tier Cloudflare Workers (`Accept: text/markdown` polyfill + `/.well-known/search` RFC 10008 BM25 gateway on $0/mo), WAF JSON + Terraform HCL + CI Budget Gate against `$0.75/1k` overages, 5-Tool PRO MCP server & Batch Executive Fleet Auditor CLI.
+- [Complete AI Engineering Stack Bundle ($79 — Save $38)](https://danlopes3.gumroad.com/l/complete-ai-engineering-stack): 3 core Pro suites combined (10 security hooks/CLIs, 15 native MCP servers, 25 n8n workflows, 12 senior rulebooks, 12 slash skills).
 - [AI Coding Guardrails & Engineering OS ($49)](https://danlopes3.gumroad.com/l/ai-coding-guardrails-os)
 - [Production MCP Server Suite ($39)](https://danlopes3.gumroad.com/l/production-mcp-suite)
 - [AI Agency & DevOps Automation Vault ($29)](https://danlopes3.gumroad.com/l/ai-automation-vault)
 
-## Apify Store Actors (Pay-Per-Event + MCP Ready)
+## Apify Store Actors (6 Live Pay-Per-Event + MCP Ready)
+- [Cloudflare Search for Agents & AI-Readiness Auditor](https://apify.com/danlopes18/agent-readiness-search-auditor): Audits `/.well-known/search`, RFC 10008 `HTTP QUERY`, `Accept: text/markdown` token savings, `/llms.txt`, robots.txt AI bots, Cloudflare `$0.75/1k` overage risk & 4-Tier Cascade BM25 search ($5 / 1,000 URLs). Live Demo Task: https://apify.com/danlopes18/agent-readiness-search-auditor/examples/agent-readiness-cloudflare-demo
 - [Website Tech Stack, Security & AI-Readiness (llms.txt) Auditor](https://apify.com/danlopes18/apify-site-intel-ai-auditor): Zero-browser B2B lead enrichment, security header grader & AI crawler readiness auditor ($5 / 1,000 domains).
 - [Fast LLM-Ready Markdown & Sitemap Crawler (RAG / MCP)](https://apify.com/danlopes18/apify-llm-markdown-crawler): Ultra-fast HTML-to-Markdown & sitemap crawler with token counting for RAG, Claude, Cursor & n8n ($3 / 1,000 pages).
 - [GitHub Organization & Open-Source Repo Intelligence Extractor](https://apify.com/danlopes18/apify-github-devtool-org-intel): B2B devtool lead enrichment, velocity scoring & AI/MCP adoption signals ($4 / 1,000 profiles/repos).
 - [RSS, Atom & Blog News Intelligence Aggregator (AI / MCP)](https://apify.com/danlopes18/apify-rss-news-ai-monitor): Zero-browser RSS/Atom/JSON Feed aggregator with auto-discovery, keyword filtering & clean LLM summaries ($2 / 1,000 articles).
 - [B2B Company Contact, Email, Phone & Social Profile Extractor](https://apify.com/danlopes18/apify-b2b-contact-social-extractor): Multi-page zero-browser crawler extracting verified public emails (role vs personal), phones, WhatsApp/booking links & social profiles ($6 / 1,000 companies).
 
-## Live Cloudflare Edge REST API (API.market)
-- [AI Web Intelligence, RAG Markdown & B2B Enrichment API](https://api.market/store/danlopes18/edge-web-intel-api): 5 sub-second zero-browser REST endpoints (`/v1/audit`, `/v1/markdown`, `/v1/github-org`, `/v1/rss`, `/v1/b2b-contacts`) with built-in SSRF shield and OpenAPI 3.1 spec (Free tier + $19–$149/mo). Source: https://github.com/danlopes18-ctrl/edge-web-intel-api
+## Live Cloudflare Edge REST API v1.1 (API.market)
+- [AI Web Intelligence, Agent Search & B2B Enrichment API](https://api.market/store/danlopes18/edge-web-intel-api): 7 sub-second zero-browser REST endpoints (15 GET/POST routes: `/v1/agent-readiness`, `/v1/agent-search`, `/v1/audit`, `/v1/markdown`, `/v1/github-org`, `/v1/rss`, `/v1/b2b-contacts`) with built-in SSRF shield and OpenAPI 3.0.3 spec (`https://edge-web-intel-api.danlopes18.workers.dev/openapi.json`, Free tier + $19 / $49 / $149/mo). Source: https://github.com/danlopes18-ctrl/edge-web-intel-api
 
 ## Fixed-Price Engineering Services (Upwork Project Catalog & Fiverr)
 - Custom n8n AI Workflows & Webhooks ($95–$490): [Upwork](https://www.upwork.com/services/product/2125537911403602831) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-production-n8n-ai-automation-workflow-with-apis-and-webhooks)
@@ -29,6 +32,7 @@
 - Fast Web Scrapers, Apify Actors & Cloudflare Edge APIs ($95–$445): [Upwork](https://www.upwork.com/services/product/2125554456380990351) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-fast-web-scraper-b2b-data-extractor-or-cloudflare-edge-api)
 
 ## Technical Engineering Guides
+- [Cloudflare Search for Agents Without the $20/mo Pro Wall or $0.75/1k Overage Shock](https://danlopes18-ctrl.github.io/guides/cloudflare-search-for-agents-guide.html): Live benchmark (`93.5%` token savings on `blog.cloudflare.com`), Free-Tier Workers polyfill, RFC 10008 `HTTP QUERY`, 4-Tier Cascade Discovery, and WAF/Terraform anti-overage rules.
 - [Stop Babysitting AI Agents: Production Harness Loops, Default-FAIL Evaluators & Zero-Browser Edge APIs](https://danlopes18-ctrl.github.io/guides/harness-engineering-loops-evaluators-edge-api.html): Architecture guide covering structured JSON state, isolated read-only evaluator loops, deterministic `PreToolUse` hooks, and sub-second Cloudflare Edge APIs.
 - [4 Real Security Bugs in Node.js MCP Servers — Fixed With Zero npm Dependencies](https://danlopes18-ctrl.github.io/guides/hardening-nodejs-mcp-servers.html): Symlink jails (`fs.realpathSync`), DNS-verified SSRF protection (`169.254.169.254`), read-only `node:sqlite`, and `crypto.timingSafeEqual` HMAC verification.
-- [Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Apify Actors](https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html): Architecture and benchmarks for 5 zero-browser Node.js 22 Apify Actors for RAG, llms.txt audits, GitHub velocity, RSS monitoring, and B2B lead enrichment.
+- [Why Headless Browser Scrapers Burn Compute: Building 174ms Zero-Browser Apify Actors](https://danlopes18-ctrl.github.io/guides/zero-browser-apify-actors-rag-b2b.html): Architecture and benchmarks for zero-browser Node.js 22 Apify Actors for RAG, llms.txt audits, GitHub velocity, RSS monitoring, and B2B lead enrichment.

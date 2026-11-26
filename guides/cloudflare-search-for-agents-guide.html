@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cloudflare Search for Agents Without the $20/mo Pro Wall or $0.75/1k Overage Shock · Daniel Lopes</title>
+  <meta name="description" content="Technical architecture guide to Cloudflare Search for Agents (/.well-known/search, RFC 10008 HTTP QUERY) and Markdown for Agents (Accept: text/markdown) on Cloudflare Free ($0/mo), plus WAF/Terraform anti-overage guardrails and 4-Tier Cascade MCP discovery." />
+  <meta name="theme-color" content="#06080E" />
+  <meta name="agent:endpoint" content="https://edge-web-intel-api.danlopes18.workers.dev/v1/agent-search" />
+  <link rel="canonical" href="https://danlopes18-ctrl.github.io/guides/cloudflare-search-for-agents-guide.html" />
+  <link rel="search" href="/llms.txt" title="Daniel Lopes AI DevTools LLMs Index" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://danlopes18-ctrl.github.io/guides/cloudflare-search-for-agents-guide.html" />
+  <meta property="og:title" content="Cloudflare Search for Agents &amp; Markdown for Agents on $0/mo Free Tier (With Anti-Overage Guardrails)" />
+  <meta property="og:description" content="Cut AI agent payloads by 80%–93.5% with Accept: text/markdown and /.well-known/search on Cloudflare Workers Free — and block $0.75/1k semantic search overages before bots hit your bill." />
+  <meta property="og:image" content="https://danlopes18-ctrl.github.io/assets/card_cloudflare_agent_kit.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@danlopesdev" />
+  <meta name="twitter:title" content="Cloudflare Search for Agents on $0/mo + Anti-Overage WAF Guardrails" />
+  <meta name="twitter:description" content="Deploy Accept: text/markdown + RFC 10008 /.well-known/search on Cloudflare Free, audit fleets via MCP/Apify/Edge API, and cap $0.75/1k query bills." />
+  <meta name="twitter:image" content="https://danlopes18-ctrl.github.io/assets/card_cloudflare_agent_kit.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Cloudflare Search for Agents Without the $20/mo Pro Wall or $0.75/1k Overage Shock",
+    "description": "Engineering guide and live benchmark for Cloudflare Search for Agents (/.well-known/search, RFC 10008 HTTP QUERY), Markdown for Agents (Accept: text/markdown), WAF/Terraform anti-overage rules, and 4-Tier Cascade Discovery MCP tooling.",
+    "author": {
+      "@type": "Person",
+      "name": "Daniel Lopes",
+      "url": "https://danlopes18-ctrl.github.io/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Daniel Lopes"
+    },
+    "datePublished": "2026-11-26",
+    "dateModified": "2026-11-26",
+    "mainEntityOfPage": "https://danlopes18-ctrl.github.io/guides/cloudflare-search-for-agents-guide.html",
+    "image": "https://danlopes18-ctrl.github.io/assets/card_cloudflare_agent_kit.jpg",
+    "keywords": ["Cloudflare Search for Agents", "Markdown for Agents", "well-known search", "RFC 10008 HTTP QUERY", "llms.txt", "Cloudflare Workers Free", "WAF rate limiting", "MCP server", "Apify Actor", "API.market"]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #06080E;
+      --bg-elev: #0C101A;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --green: #34D399;
+      --cyan: #38BDF8;
+      --amber: #FBBF24;
+      --red: #F87171;
+      --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    body {
+      background:
+        radial-gradient(900px 520px at 80% -5%, rgba(251, 191, 36, 0.12), transparent 62%),
+        radial-gradient(800px 480px at 10% 18%, rgba(56, 189, 248, 0.11), transparent 60%),
+        var(--bg);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mono { font-family: var(--mono); }
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(6, 8, 14, 0.84);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-in {
+      max-width: 960px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; color: #FFF; font-weight: 700; font-size: 15px; }
+    .brand:hover { text-decoration: none; }
+    .brand img { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); }
+    .nav-links { display: flex; gap: 18px; font-size: 13.5px; }
+    .nav-links a { color: var(--text-muted); }
+    .nav-links a:hover { color: #FFF; text-decoration: none; }
+
+    .article-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 84px; }
+    .crumb { font-size: 13px; color: var(--text-dim); margin-bottom: 18px; }
+    .crumb a { color: var(--text-muted); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 999px; margin-bottom: 16px;
+      background: rgba(56,189,248,0.13); color: var(--cyan); border: 1px solid rgba(56,189,248,0.36);
+    }
+    h1 {
+      font-size: clamp(30px, 4.2vw, 43px); font-weight: 850; line-height: 1.12;
+      letter-spacing: -0.028em; margin-bottom: 18px; color: #FFF;
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--text-dim);
+      padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 30px;
+    }
+    .hero-img {
+      width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 28px; box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+    }
+    .lead { font-size: 18px; color: #CBD5E1; margin-bottom: 26px; }
+    h2 {
+      font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: #FFF;
+      margin: 42px 0 14px; padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    h3 { font-size: 18px; font-weight: 700; color: #E2E8F0; margin: 24px 0 10px; }
+    p { margin-bottom: 16px; color: #CBD5E1; font-size: 16px; }
+    ul, ol { margin: 0 0 18px 22px; color: #CBD5E1; }
+    li { margin-bottom: 8px; }
+    code {
+      font-family: var(--mono); font-size: 0.88em;
+      background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; color: #E2E8F0;
+    }
+    pre {
+      background: #0A0E17; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 18px 20px; overflow-x: auto; margin: 16px 0 22px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.6; color: #E2E8F0;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+
+    .table-wrap { overflow-x: auto; margin: 20px 0 26px; border-radius: 12px; border: 1px solid var(--border); }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 14.5px;
+      background: var(--bg-elev); min-width: 580px;
+    }
+    th, td { padding: 13px 15px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(255,255,255,0.03); color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 700; }
+    .warn { color: var(--amber); font-weight: 700; }
+    .no { color: var(--red); font-weight: 700; }
+
+    .cta-box {
+      margin-top: 44px; padding: 28px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(56,189,248,0.13));
+      border: 1px solid rgba(52,211,153,0.38);
+    }
+    .cta-box h3 { margin-top: 0; font-size: 22px; color: #FFF; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-weight: 700; font-size: 14px; padding: 12px 18px; border-radius: 10px;
+      transition: transform .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, #10B981, #34D399); color: #04130D; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #FFF; border: 1px solid rgba(255,255,255,0.18); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 24px; text-align: center;
+      color: var(--text-dim); font-size: 13.5px;
+    }
+    @media (max-width: 640px) { .nav-links { display: none; } .article-wrap { padding: 30px 16px 60px; } }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="../index.html">
+        <img src="../assets/avatar.jpg" alt="Daniel Lopes" />
+        <span>Daniel Lopes · AI DevTools</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../index.html#suites">Pro Kits</a>
+        <a href="../index.html#edge-api">Live API</a>
+        <a href="../index.html#actors">Apify</a>
+        <a href="https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit" target="_blank" rel="noopener">Kit PRO ($29)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-wrap">
+    <div class="crumb"><a href="../index.html">Storefront</a> / <a href="../index.html#guides">Guides</a> / Cloudflare Search for Agents</div>
+    <div class="eyebrow">Cloudflare Search for Agents · RFC 10008 · Edge Engineering</div>
+    <h1>Cloudflare Search for Agents Without the $20/mo Pro Wall or $0.75/1k Overage Shock</h1>
+    <div class="meta">
+      <span>By <strong>Daniel Lopes</strong></span>
+      <span>Published Nov 26, 2026</span>
+      <span>8 min read</span>
+      <span>Cloudflare Workers · RFC 10008 · MCP · WAF/Terraform</span>
+    </div>
+
+    <img class="hero-img" src="../assets/card_cloudflare_agent_kit.jpg" alt="Cloudflare Agent-Ready and Search Guardrails Kit architecture diagram" />
+
+    <p class="lead">Cloudflare's <strong>Search for Agents</strong> (<code>/.well-known/search</code> + RFC 10008 <code>HTTP QUERY</code>) and <strong>Markdown for Agents</strong> (<code>Accept: text/markdown</code>) cut AI agent token payloads by <strong>80%–93.5%</strong>. But rolling them out blindly hits two real production walls: a <strong>$20/mo per-zone Pro paywall</strong> for native Markdown conversion and <strong>$0.75 per 1,000 semantic search query overages</strong> when unguarded bots hammer your endpoint.</p>
+
+    <h2>1. Live Production Benchmark: HTML vs Markdown Negotiation</h2>
+    <p>We ran our zero-browser <a href="https://apify.com/danlopes18/agent-readiness-search-auditor" target="_blank" rel="noopener">Cloudflare Search for Agents &amp; AI-Readiness Auditor</a> live against <code>blog.cloudflare.com/search-for-agents/</code> and our static storefront to measure actual protocol behavior and token reduction:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Target Domain</th>
+            <th>Score / Grade</th>
+            <th>/.well-known/search</th>
+            <th>Token Savings %</th>
+            <th>Cascade Tier</th>
+            <th>CF Overage Risk</th>
+            <th>Latency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>blog.cloudflare.com</code></td>
+            <td class="yes">80 / 100 (B+)</td>
+            <td class="yes">Live (RFC 10008)</td>
+            <td class="yes">93.5% saved</td>
+            <td><code>tier1_well_known_search</code></td>
+            <td class="warn">high (needs WAF cap)</td>
+            <td>2,079 ms</td>
+          </tr>
+          <tr>
+            <td><code>danlopes18-ctrl.github.io</code></td>
+            <td>Baseline static</td>
+            <td>Fallback</td>
+            <td class="yes">74.2% saved</td>
+            <td><code>tier3_llms_txt</code></td>
+            <td class="yes">low ($0 edge)</td>
+            <td>314 ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>That <strong>93.5% token savings</strong> on <code>blog.cloudflare.com</code> is why agent-native search is taking over RAG and coding workflows. Instead of scraping 300 KB of navigation chrome, an agent negotiates <code>Accept: text/markdown</code> or queries <code>/.well-known/search</code> directly and gets scored Markdown chunks in one round-trip.</p>
+
+    <h2>2. Native Cloudflare Paid vs Free-Tier Guardrails Architecture</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Native Cloudflare Paid Stack</th>
+            <th>Free-Tier Polyfill + Guardrails Kit ($29 one-time)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Accept: text/markdown</code> negotiation</td>
+            <td class="no">Cloudflare Pro ($20/mo/zone = $240/yr/site)</td>
+            <td class="yes">Cloudflare Workers Free ($0/mo) + Edge Cache API</td>
+          </tr>
+          <tr>
+            <td><code>/.well-known/search</code> + RFC 10008 <code>HTTP QUERY</code></td>
+            <td class="warn">$0.75 / 1,000 semantic overages + 500 pages/day cap</td>
+            <td class="yes">$0 / 1k deterministic BM25 over <code>/llms.txt</code> + <code>/sitemap.xml</code></td>
+          </tr>
+          <tr>
+            <td>Anti-overage WAF &amp; Rate-Limit Defense</td>
+            <td class="no">Manual setup (scrapers can spike bills overnight)</td>
+            <td class="yes">Drop-in WAF JSON + Terraform HCL + CI Budget Gate CLI</td>
+          </tr>
+          <tr>
+            <td>Multi-site Fleet Auditing &amp; MCP Server</td>
+            <td class="no">Single-zone dashboard only</td>
+            <td class="yes">5-Tool PRO MCP + Batch CLI (JSON/CSV/Executive HTML)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. The 4-Tier Cascade Discovery Pattern for AI Agents</h2>
+    <p>Most websites in 2026 do not expose <code>/.well-known/search</code> yet. If your MCP server or agent tool hardcodes Tier 1 only, it fails on 95% of the web. Our open-source <a href="https://github.com/danlopes18-ctrl/agent-search-mcp" target="_blank" rel="noopener"><code>agent-search-mcp</code> (MIT)</a> and Edge API v1.1 run a deterministic <strong>4-Tier Cascade</strong> with DNS-verified SSRF protection:</p>
+    <ol>
+      <li><strong>Tier 1 — Native <code>/.well-known/search</code>:</strong> Probes <code>OPTIONS</code>, <code>&lt;meta name="agent:endpoint"&gt;</code>, and sends RFC 10008 <code>HTTP QUERY</code> (falling back to <code>GET ?q=</code> / <code>POST</code> JSON).</li>
+      <li><strong>Tier 2 — Negotiated Markdown:</strong> Requests <code>Accept: text/markdown, text/html;q=0.8</code> and parses <code>x-markdown-tokens</code> + YAML frontmatter.</li>
+      <li><strong>Tier 3 — Structured <code>/llms.txt</code> &amp; <code>/sitemap.xml</code>:</strong> Fetches curated AI docs indexes and scores matching chunks with deterministic BM25.</li>
+      <li><strong>Tier 4 — Zero-Browser HTML Cleaning + BM25:</strong> Strips scripts, styles, navs, and footers in pure edge JS and ranks relevant paragraphs in milliseconds.</li>
+    </ol>
+
+    <h2>4. Test It Live in 1 Command (Edge API v1.1 or Local MIT MCP)</h2>
+    <p>We added both <code>/v1/agent-readiness</code> and <code>/v1/agent-search</code> to our live Cloudflare Edge API on <a href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">API.market</a> (15 REST endpoints, Free tier + $19–$149/mo):</p>
+
+<pre><code># 1) Audit any URL for /.well-known/search, RFC 10008 HTTP QUERY, text/markdown &amp; overage risk
+curl -G "https://prod.api.market/api/v1/danlopes18/edge-web-intel-api/v1/agent-readiness" \
+  --data-urlencode "url=https://blog.cloudflare.com/search-for-agents/" \
+  -H "x-api-market-key: YOUR_API_KEY"
+
+# 2) Run 4-Tier Cascade Agent Search returning BM25-ranked Markdown chunks
+curl -G "https://prod.api.market/api/v1/danlopes18/edge-web-intel-api/v1/agent-search" \
+  --data-urlencode "url=https://blog.cloudflare.com/search-for-agents/" \
+  --data-urlencode "q=markdown for agents" \
+  -H "x-api-market-key: YOUR_API_KEY"</code></pre>
+
+    <p>Prefer local execution inside Claude Desktop, Claude Code, Cursor, or Windsurf? Clone our zero-dependency MIT MCP server directly:</p>
+
+<pre><code>git clone https://github.com/danlopes18-ctrl/agent-search-mcp
+node agent-search-mcp/server.mjs</code></pre>
+
+    <h2>5. Blocking $0.75/1k Semantic Search Overage Spikes With WAF + Edge Cache</h2>
+    <p>If you run native Cloudflare AI Search on paid zones, never leave <code>/.well-known/search</code> uncached or unthrottled. Three rules cut paid semantic query volume by <strong>60%–85%</strong> immediately:</p>
+    <ul>
+      <li><strong>Edge Cache 5-minute TTL</strong> on normalized query strings (<code>GET /.well-known/search?q=*</code>) so repeated agent loops hit cache at $0.</li>
+      <li><strong>Per-IP Rate Limiting</strong> (<code>20 req / 10s</code>) returning <code>429</code> with <code>Retry-After</code> to stop runaway agent loops and scrapers.</li>
+      <li><strong>CI Budget Gate</strong> (<code>budget-auditor.mjs</code>) modeling monthly query spikes and exiting non-zero if projected overages exceed your cap.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>Deploy Cloudflare Agent-Ready Search &amp; Guardrails Today</h3>
+      <p>Start free with our MIT MCP server or live Apify Demo Task, call our hosted Edge API v1.1 on API.market, or grab the complete commercial Kit PRO (2 Free-Tier Workers + WAF/Terraform Anti-Overage Pack + 5-Tool PRO MCP + Fleet Auditor CLI) for a one-time $29 payment.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit" target="_blank" rel="noopener">Get Kit PRO on Gumroad — $29 →</a>
+        <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl/agent-search-mcp" target="_blank" rel="noopener">Free MIT MCP (GitHub)</a>
+        <a class="btn btn-secondary" href="https://apify.com/danlopes18/agent-readiness-search-auditor" target="_blank" rel="noopener">Apify Actor #6 (Pay-per-Event)</a>
+        <a class="btn btn-secondary" href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">Edge API v1.1 (API.market)</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Daniel Lopes · <a href="../index.html">Storefront</a> · <a href="https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit" target="_blank" rel="noopener">Kit PRO ($29)</a> · <a href="https://apify.com/danlopes18/agent-readiness-search-auditor" target="_blank" rel="noopener">Apify Actor</a> · <a href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">API.market</a> · <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a> · <a href="https://x.com/danlopesdev" target="_blank" rel="noopener">X (@danlopesdev)</a>
+  </footer>
+</body>
+</html>

@@ -6,7 +6,9 @@
   <title>Daniel Lopes · Zero-Dependency AI Engineering Kits (MCP, Guardrails &amp; n8n)</title>
   <meta name="description" content="Production-hardened zero-dependency Node.js MCP servers, Claude Code PreToolUse security hooks, and standard-node n8n workflows. Try 3 MIT kits free or get the Complete Stack ($79)." />
   <meta name="theme-color" content="#06080E" />
+  <meta name="agent:endpoint" content="https://edge-web-intel-api.danlopes18.workers.dev/v1/agent-search" />
   <link rel="canonical" href="https://danlopes18-ctrl.github.io/" />
+  <link rel="search" href="/llms.txt" title="Daniel Lopes AI DevTools LLMs Index" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://danlopes18-ctrl.github.io/" />
@@ -57,6 +59,14 @@
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Cross-Platform",
         "offers": { "@type": "Offer", "price": "29.00", "priceCurrency": "USD", "url": "https://danlopes3.gumroad.com/l/ai-automation-vault" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "position": 5,
+        "name": "Cloudflare Agent-Ready & Search Guardrails Kit",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Cross-Platform",
+        "offers": { "@type": "Offer", "price": "29.00", "priceCurrency": "USD", "url": "https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit" }
       }
     ]
   }
@@ -554,16 +564,48 @@
       </div>
     </section>
 
-    <!-- 3 FLAGSHIP SUITES -->
+    <!-- 4 FLAGSHIP SUITES -->
     <section class="sec" id="suites">
       <div class="wrap">
         <div class="sec-head">
-          <div class="eyebrow">3 Production Developer Suites</div>
+          <div class="eyebrow">4 Production Developer Suites</div>
           <h2>Inspect the Free MIT Code. Upgrade Only When It Earns Its Keep.</h2>
           <p>Every Pro suite comes with a free, open-source MIT Lite edition on GitHub so you can verify code quality, security posture, and zero-dependency execution on your own machine first.</p>
         </div>
 
         <div class="suites-stack">
+          <!-- Suite 0 (NEW): Cloudflare Agent-Ready & Search Guardrails Kit ($29) -->
+          <article class="suite-card featured">
+            <div class="suite-visual">
+              <img src="assets/card_cloudflare_agent_kit.jpg" alt="Cloudflare Agent-Ready and Search Guardrails Kit with Free-Tier Markdown Polyfill Worker, well-known search HTTP QUERY gateway and WAF anti-overage rules" loading="lazy" />
+            </div>
+            <div class="suite-body">
+              <div>
+                <div class="suite-top">
+                  <span class="chip cyan">NEW · Cloudflare Search for Agents</span>
+                  <div class="price-tag">$29 <small>one-time</small></div>
+                </div>
+                <h3>Cloudflare Agent-Ready &amp; Search Guardrails Kit</h3>
+                <p class="suite-desc">Deploy <em>Markdown for Agents</em> (<span class="mono">Accept: text/markdown</span>) + RFC 10008 <span class="mono">/.well-known/search</span> BM25 Gateway on <strong>Cloudflare Free ($0/mo)</strong> and block <span class="mono">$0.75/1k</span> semantic search overage spikes.</p>
+                <ul class="feat-list">
+                  <li><strong>2 Free-Tier Cloudflare Workers:</strong> <span class="mono">Accept: text/markdown</span> polyfill (replaces $20/mo Pro wall) + <span class="mono">/.well-known/search</span> RFC 10008 <span class="mono">HTTP QUERY</span> BM25 gateway with Edge Cache API.</li>
+                  <li><strong>WAF &amp; Terraform Anti-Overage Pack:</strong> ready JSON WAF rules, <span class="mono">20 req/10s</span> rate limiting, Terraform HCL &amp; CI budget-gate CLI cutting paid queries 60%–85%.</li>
+                  <li><strong>5-Tool PRO MCP + Fleet Auditor CLI:</strong> DNS-verified SSRF shield + batch Executive HTML/CSV/JSON reporting for unlimited client zones.</li>
+                </ul>
+              </div>
+              <div>
+                <div class="cli-box">
+                  <code>git clone https://github.com/danlopes18-ctrl/agent-search-mcp &amp;&amp; node agent-search-mcp/server.mjs</code>
+                  <button class="copy-btn" type="button" data-copy="git clone https://github.com/danlopes18-ctrl/agent-search-mcp && node agent-search-mcp/server.mjs">Copy</button>
+                </div>
+                <div class="suite-actions">
+                  <a class="btn btn-primary" href="https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit" target="_blank" rel="noopener">Buy Pro Kit — $29</a>
+                  <a class="btn btn-secondary" href="https://github.com/danlopes18-ctrl/agent-search-mcp" target="_blank" rel="noopener">Free MIT MCP (GitHub)</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
           <!-- Suite 1: Guardrails OS ($49) -->
           <article class="suite-card featured">
             <div class="suite-visual">
@@ -768,20 +810,22 @@
     <section class="sec" id="edge-api">
       <div class="wrap">
         <div class="sec-head">
-          <div class="eyebrow">Live on API.market · Cloudflare Workers Edge</div>
-          <h2>AI Web Intelligence, RAG Markdown &amp; B2B Enrichment API</h2>
-          <p>5 sub-second, zero-browser REST endpoints engineered for AI agents, RAG pipelines, n8n workflows, and B2B enrichment — 100% SSRF-hardened with 0 external npm dependencies.</p>
+          <div class="eyebrow">Live on API.market · Cloudflare Workers Edge · v1.1</div>
+          <h2>AI Web Intelligence, Agent Search &amp; B2B Enrichment API</h2>
+          <p>7 sub-second, zero-browser REST endpoints (15 GET/POST routes) engineered for AI agents, Cloudflare Search for Agents audits, RAG pipelines, n8n workflows, and B2B enrichment — 100% SSRF-hardened with 0 external npm dependencies.</p>
         </div>
         <div class="bundle-box" style="margin-bottom:24px;">
           <div>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
               <span class="chip">● LIVE ON API.MARKET</span>
-              <span class="chip cyan">OpenAPI 3.1 · 16/16 QA PASS</span>
+              <span class="chip cyan">OpenAPI v1.1 · 15 Routes</span>
               <span class="chip amber">Free Tier + $19–$149/mo</span>
             </div>
-            <h3 style="font-size:26px;font-weight:850;letter-spacing:-0.025em;margin-bottom:10px;">5 Production Endpoints, Zero Headless Browser Tax</h3>
-            <p style="color:var(--text-muted);font-size:15px;margin-bottom:16px;">Stop burning compute spinning up Chromium just to fetch clean Markdown, check <span class="mono">llms.txt</span>, inspect GitHub orgs, discover RSS feeds, or enrich B2B contacts. Call directly from Claude, Cursor, n8n, Python, or Node.js.</p>
+            <h3 style="font-size:26px;font-weight:850;letter-spacing:-0.025em;margin-bottom:10px;">7 Production Endpoints, Zero Headless Browser Tax</h3>
+            <p style="color:var(--text-muted);font-size:15px;margin-bottom:16px;">Audit <span class="mono">/.well-known/search</span> &amp; <span class="mono">Accept: text/markdown</span> readiness, run 4-Tier Cascade BM25 agent search, fetch clean RAG Markdown, inspect GitHub orgs, discover RSS feeds, or enrich B2B contacts directly from Claude, Cursor, n8n, Python, or Node.js.</p>
             <div class="bundle-pills">
+              <span class="mono">/v1/agent-readiness</span>
+              <span class="mono">/v1/agent-search</span>
               <span class="mono">/v1/audit</span>
               <span class="mono">/v1/markdown</span>
               <span class="mono">/v1/github-org</span>
@@ -810,10 +854,25 @@
       <div class="wrap">
         <div class="sec-head">
           <div class="eyebrow">Apify Store · Pay-per-Event Cloud Tools</div>
-          <h2>5 Zero-Browser Node.js 22 Actors for RAG, Audits &amp; B2B Enrichment</h2>
+          <h2>6 Zero-Browser Node.js 22 Actors for Agent Search, RAG &amp; B2B Enrichment</h2>
           <p>Sub-second pure Node.js 22 Actors with SSRF protection, zero Chromium compute waste, MCP compatibility, and ready-to-run Task Examples.</p>
         </div>
         <div class="mini-grid">
+          <article class="mini-card" style="border-color:rgba(56,189,248,0.42);">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip cyan">NEW · Agent Search</span>
+                <span class="mini-price">$5 / 1k URLs</span>
+              </div>
+              <h3>Cloudflare Search for Agents &amp; AI-Readiness Auditor</h3>
+              <p style="margin-top:8px">Audits <span class="mono">/.well-known/search</span>, RFC 10008 <span class="mono">HTTP QUERY</span>, <span class="mono">text/markdown</span> token savings, AI bots, overage risk &amp; 4-Tier Cascade BM25 search.</p>
+            </div>
+            <div class="mini-links">
+              <a href="https://apify.com/danlopes18/agent-readiness-search-auditor" target="_blank" rel="noopener">Apify Store →</a>
+              <a class="muted" href="https://apify.com/danlopes18/agent-readiness-search-auditor/examples/agent-readiness-cloudflare-demo" target="_blank" rel="noopener">Live Demo Task</a>
+            </div>
+          </article>
+
           <article class="mini-card">
             <div>
               <div class="mini-meta" style="margin-bottom:10px">
@@ -889,10 +948,10 @@
             </div>
           </article>
 
-          <article class="mini-card" style="border-color:rgba(52,211,153,0.3);background:linear-gradient(155deg, rgba(16,185,129,0.09), rgba(12,16,26,0.96));">
+          <article class="mini-card" style="border-color:rgba(52,211,153,0.3);background:linear-gradient(155deg, rgba(16,185,129,0.09), rgba(12,16,26,0.96));grid-column: 1 / -1;">
             <div>
               <div class="mini-meta" style="margin-bottom:10px">
-                <span class="chip">All 5 Live Actors</span>
+                <span class="chip">All 6 Live Actors</span>
                 <span class="mini-price">MCP + REST API</span>
               </div>
               <h3>Browse Full Apify Creator Store</h3>
@@ -1000,7 +1059,22 @@
             </div>
           </article>
 
-          <article class="mini-card" style="grid-column: 1 / -1;">
+          <article class="mini-card" style="border-color:rgba(56,189,248,0.42);">
+            <div>
+              <div class="mini-meta" style="margin-bottom:10px">
+                <span class="chip cyan">NEW · Cloudflare Agents · 8 min read</span>
+                <span class="mini-price">93.5% Token Cut</span>
+              </div>
+              <h3>Cloudflare Search for Agents Without the $20/mo Pro Wall or $0.75/1k Overage Shock</h3>
+              <p style="margin-top:8px">Live benchmark on <span class="mono">blog.cloudflare.com</span>, Free-Tier Workers polyfill for <span class="mono">Accept: text/markdown</span> + RFC 10008 <span class="mono">/.well-known/search</span>, 4-Tier Cascade MCP &amp; WAF/Terraform budget guardrails.</p>
+            </div>
+            <div class="mini-links">
+              <a href="guides/cloudflare-search-for-agents-guide.html">Read Full Architecture Guide →</a>
+              <a class="muted" href="https://danlopes3.gumroad.com/l/cloudflare-agent-search-kit" target="_blank" rel="noopener">Kit PRO ($29) ↗</a>
+            </div>
+          </article>
+
+          <article class="mini-card">
             <div>
               <div class="mini-meta" style="margin-bottom:10px">
                 <span class="chip amber">Harness Engineering · 7 min read</span>
@@ -1036,7 +1110,7 @@
           </details>
           <details class="faq">
             <summary>Can I try the code before paying anything?</summary>
-            <p>Yes — all 3 products have live, MIT-licensed Lite editions on GitHub (<span class="mono">ai-agent-guardrails-lite</span>, <span class="mono">mcp-starter-suite-lite</span>, and <span class="mono">ai-automation-vault-lite</span>). Clone them, run the tests locally, and only upgrade to Pro when you want the full libraries.</p>
+            <p>Yes — all 4 products have live, MIT-licensed Lite editions on GitHub (<span class="mono">agent-search-mcp</span>, <span class="mono">ai-agent-guardrails-lite</span>, <span class="mono">mcp-starter-suite-lite</span>, and <span class="mono">ai-automation-vault-lite</span>). Clone them, run the tests locally, and only upgrade to Pro when you want the full libraries.</p>
           </details>
           <details class="faq">
             <summary>Can I use the Pro suites inside client or agency projects?</summary>
@@ -1057,7 +1131,7 @@
       <div class="foot-links">
         <a href="https://api.market/store/danlopes18/edge-web-intel-api" target="_blank" rel="noopener">Live API (API.market)</a>
         <a href="https://danlopes3.gumroad.com" target="_blank" rel="noopener">Gumroad Storefront</a>
-        <a href="https://apify.com/danlopes18" target="_blank" rel="noopener">Apify Store (5 Actors)</a>
+        <a href="https://apify.com/danlopes18" target="_blank" rel="noopener">Apify Store (6 Actors)</a>
         <a href="https://www.upwork.com/freelancers/~017cd1009178a92a66" target="_blank" rel="noopener">Upwork</a>
         <a href="https://www.fiverr.com/danlopes18" target="_blank" rel="noopener">Fiverr</a>
         <a href="https://github.com/danlopes18-ctrl" target="_blank" rel="noopener">GitHub</a>
