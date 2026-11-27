@@ -15,7 +15,8 @@
 - [Production MCP Server Suite ($39)](https://danlopes3.gumroad.com/l/production-mcp-suite)
 - [AI Agency & DevOps Automation Vault ($29)](https://danlopes3.gumroad.com/l/ai-automation-vault)
 
-## Apify Store Actors (6 Live Pay-Per-Event + MCP Ready)
+## Apify Store Actors (7 Live Pay-Per-Event + MCP Ready)
+- [SaaS & AI Pricing Page & Tier Matrix Extractor](https://apify.com/danlopes18/saas-pricing-matrix-extractor): Zero-browser 85ms–137ms cloud pricing intelligence extractor (`Accept: text/markdown` + HTML/JSON-LD) returning structured tiers, monthly/annual prices, limits & enterprise CTAs ($7 / 1,000 pages, MCP Ready). Live Demo Task: https://apify.com/danlopes18/saas-pricing-matrix-extractor/examples/saas-pricing-matrix-linear-vercel-supabase-demo
 - [Cloudflare Search for Agents & AI-Readiness Auditor](https://apify.com/danlopes18/agent-readiness-search-auditor): Audits `/.well-known/search`, RFC 10008 `HTTP QUERY`, `Accept: text/markdown` token savings, `/llms.txt`, robots.txt AI bots, Cloudflare `$0.75/1k` overage risk & 4-Tier Cascade BM25 search ($5 / 1,000 URLs). Live Demo Task: https://apify.com/danlopes18/agent-readiness-search-auditor/examples/agent-readiness-cloudflare-demo
 - [Website Tech Stack, Security & AI-Readiness (llms.txt) Auditor](https://apify.com/danlopes18/apify-site-intel-ai-auditor): Zero-browser B2B lead enrichment, security header grader & AI crawler readiness auditor ($5 / 1,000 domains).
 - [Fast LLM-Ready Markdown & Sitemap Crawler (RAG / MCP)](https://apify.com/danlopes18/apify-llm-markdown-crawler): Ultra-fast HTML-to-Markdown & sitemap crawler with token counting for RAG, Claude, Cursor & n8n ($3 / 1,000 pages).
@@ -26,8 +27,9 @@
 ## Live Cloudflare Edge REST API v1.1 (API.market)
 - [AI Web Intelligence, Agent Search & B2B Enrichment API](https://api.market/store/danlopes18/edge-web-intel-api): 7 sub-second zero-browser REST endpoints (15 GET/POST routes: `/v1/agent-readiness`, `/v1/agent-search`, `/v1/audit`, `/v1/markdown`, `/v1/github-org`, `/v1/rss`, `/v1/b2b-contacts`) with built-in SSRF shield and OpenAPI 3.0.3 spec (`https://edge-web-intel-api.danlopes18.workers.dev/openapi.json`, Free tier + $19 / $49 / $149/mo). Source: https://github.com/danlopes18-ctrl/edge-web-intel-api
 
-## Fixed-Price Engineering Services (4 Upwork Project Catalog + 4 Fiverr Gigs)
+## Fixed-Price Engineering Services (5 Upwork Project Catalog + 4 Fiverr Gigs)
 - Cloudflare Search for Agents, Markdown Negotiation & WAF Overage Caps ($195 / $345 / $650): [Upwork](https://www.upwork.com/services/product/2126315645367405668) | [Fiverr](https://www.fiverr.com/s/lrvxVKg)
+- Cinematic AI Commercial Videos & Product Launch Ads ($120 / $245 / $450): [Upwork](https://www.upwork.com/services/product/2126324410133406174)
 - Custom n8n AI Workflows & Webhooks ($95–$490): [Upwork](https://www.upwork.com/services/product/2125537911403602831) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-production-n8n-ai-automation-workflow-with-apis-and-webhooks)
 - Hardened TypeScript MCP Servers ($125–$545): [Upwork](https://www.upwork.com/services/product/2125550819664876751) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-secure-typescript-mcp-server-for-claude-cursor-and-ai-agents)
 - Fast Web Scrapers, Apify Actors & Cloudflare Edge APIs ($95–$445): [Upwork](https://www.upwork.com/services/product/2125554456380990351) | [Fiverr](https://www.fiverr.com/danlopes18/build-a-fast-web-scraper-b2b-data-extractor-or-cloudflare-edge-api)
