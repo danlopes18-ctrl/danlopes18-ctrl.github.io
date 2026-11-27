@@ -5,7 +5,7 @@ Official GitHub Pages storefront, `llms.txt` index, and technical engineering gu
 - **Live Storefront:** https://danlopes18-ctrl.github.io/
 - **LLMs Index:** https://danlopes18-ctrl.github.io/llms.txt
 - **Gumroad Pro Suites & Complete Stack:** https://danlopes3.gumroad.com/
-- **Apify Store (7 Live Zero-Browser Actors):** https://apify.com/danlopes18 (including [SaaS & AI Pricing Page & Tier Matrix Extractor](https://apify.com/danlopes18/saas-pricing-matrix-extractor) & [Cloudflare Search for Agents Auditor](https://apify.com/danlopes18/agent-readiness-search-auditor))
+- **Apify Store (8 Live Zero-Browser Actors):** https://apify.com/danlopes18 (including [B2B Hiring Signal & Tech Stack Extractor](https://apify.com/danlopes18/b2b-hiring-signal-extractor), [SaaS & AI Pricing Page & Tier Matrix Extractor](https://apify.com/danlopes18/saas-pricing-matrix-extractor) & [Cloudflare Search for Agents Auditor](https://apify.com/danlopes18/agent-readiness-search-auditor))
 - **Edge Web Intelligence API v1.1 (API.market):** https://api.market/store/danlopes18/edge-web-intel-api
 - **Fixed-Price Done-For-You Engineering (5 Upwork + 4 Fiverr):**
   - Cloudflare Search for Agents, Markdown Negotiation & WAF Caps (`$195 / $345 / $650`): [Upwork](https://www.upwork.com/services/product/2126315645367405668) · [Fiverr](https://www.fiverr.com/s/lrvxVKg)

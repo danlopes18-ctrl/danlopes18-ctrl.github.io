@@ -15,7 +15,8 @@
 - [Production MCP Server Suite ($39)](https://danlopes3.gumroad.com/l/production-mcp-suite)
 - [AI Agency & DevOps Automation Vault ($29)](https://danlopes3.gumroad.com/l/ai-automation-vault)
 
-## Apify Store Actors (7 Live Pay-Per-Event + MCP Ready)
+## Apify Store Actors (8 Live Pay-Per-Event + MCP Ready)
+- [B2B Hiring Signal & Tech Stack Extractor (ATS)](https://apify.com/danlopes18/b2b-hiring-signal-extractor): Zero-browser 120ms–212ms cloud ATS intelligence extractor (Greenhouse, Ashby, Lever official JSON APIs) returning open roles, AI/engineering velocity & live tech stack signals ($6 / 1,000 companies, MCP Ready). Live Demo Task: https://apify.com/danlopes18/b2b-hiring-signal-extractor/examples/b2b-hiring-signals-vercel-linear-supabase-demo
 - [SaaS & AI Pricing Page & Tier Matrix Extractor](https://apify.com/danlopes18/saas-pricing-matrix-extractor): Zero-browser 85ms–137ms cloud pricing intelligence extractor (`Accept: text/markdown` + HTML/JSON-LD) returning structured tiers, monthly/annual prices, limits & enterprise CTAs ($7 / 1,000 pages, MCP Ready). Live Demo Task: https://apify.com/danlopes18/saas-pricing-matrix-extractor/examples/saas-pricing-matrix-linear-vercel-supabase-demo
 - [Cloudflare Search for Agents & AI-Readiness Auditor](https://apify.com/danlopes18/agent-readiness-search-auditor): Audits `/.well-known/search`, RFC 10008 `HTTP QUERY`, `Accept: text/markdown` token savings, `/llms.txt`, robots.txt AI bots, Cloudflare `$0.75/1k` overage risk & 4-Tier Cascade BM25 search ($5 / 1,000 URLs). Live Demo Task: https://apify.com/danlopes18/agent-readiness-search-auditor/examples/agent-readiness-cloudflare-demo
 - [Website Tech Stack, Security & AI-Readiness (llms.txt) Auditor](https://apify.com/danlopes18/apify-site-intel-ai-auditor): Zero-browser B2B lead enrichment, security header grader & AI crawler readiness auditor ($5 / 1,000 domains).
